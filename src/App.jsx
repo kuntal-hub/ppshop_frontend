@@ -1,10 +1,17 @@
 import './App.css';
+import Header from './components/Header';
+import Notification from './components/Notification';
+import { Outlet } from 'react-router-dom';
 
 function App() {
 
   return (
     <>
-      <h1 className='text-3xl '>hello</h1>
+      <Header />
+      <Notification />
+      <main className='m-0 p-0'>
+        <Outlet />
+      </main>
     </>
   )
 }
