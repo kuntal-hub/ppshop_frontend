@@ -1,13 +1,15 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { customerService } from '../apiServices/customerService';
 import { setNotification } from '../store/notificaionSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import EditCustomer from "./EditCustomer.jsx";
 
 export default function CustomerCard({customer,index,setCustomers}) {
     const date = new Date(customer.createdAt);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [showForm, setShowForm] = useState(false);
 
     const deleteCustomer = async ()=>{
         const response = await customerService.deleteCustomer({cId:customer.cId});
@@ -34,7 +36,8 @@ return (
                 View
             </button>
 
-            <button className='py-2 font-semibold px-3 rounded-xl text-white bg-green-600 hover:bg-green-500'>
+            <button onClick={()=>setShowForm(true)}
+            className='py-2 font-semibold px-3 rounded-xl text-white bg-green-600 hover:bg-green-500'>
                 Edit
             </button>
 
@@ -43,6 +46,7 @@ return (
                 Delete
             </button>
         </div>
+        {showForm && <EditCustomer customer={customer} index={index} setCustomers={setCustomers} setShowForm={setShowForm}/>}
     </div>
   )
 }

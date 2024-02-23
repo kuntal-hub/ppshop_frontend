@@ -75,6 +75,19 @@ export class CustomerService {
             return {status:error.status, message: error.message, data: null};
         }
     }
+
+    async sesrchCustomer({searchBy="cId", search, page=1, limit=10}) {
+        try {
+            if (!search) {
+                throw new Error("Please provide search query");
+            }
+            const response = await axios.get(`/api/v1/customerInfo/search?searchBy=${searchBy}&search=${search}&page=${page}&limit=${limit}`);
+            return response.data;
+        } catch (error) {
+            console.log("Error in sesrchCustomer", error);
+            return {status:error.status, message: error.message, data: null};
+        }
+    }
 }
 
 export const customerService = new CustomerService();
