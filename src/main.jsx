@@ -11,6 +11,7 @@ import {
   Balance,
   Entry,
   Reports,
+  ViewCustomer,
  } from "./index.js";
 
 const routes = createBrowserRouter(
@@ -24,6 +25,8 @@ const routes = createBrowserRouter(
       <Route path='entry' element={<Entry />} />
 
       <Route path='reports' element={<Reports />} />
+
+      <Route path=':cId' element={<ViewCustomer />} />
 
     </Route>
   )

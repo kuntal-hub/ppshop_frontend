@@ -88,6 +88,19 @@ export class CustomerService {
             return {status:error.status, message: error.message, data: null};
         }
     }
+
+    async getCustomerById({cId}){
+        try {
+            if(!cId){
+                throw new Error("Please Provide Customer Id")
+            }
+            const response = await axios.get(`/api/v1/customerInfo/get/${cId}`)
+            return response.data;
+        } catch (error) {
+            console.log("Error in getCustomerById", error);
+            return {status:error.status, message: error.message, data: null};
+        }
+    }
 }
 
 export const customerService = new CustomerService();
