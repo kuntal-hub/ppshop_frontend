@@ -16,6 +16,19 @@ export default function CInfo() {
   const [search, setSearch] = useState('');
   const [showForm, setShowForm] = useState(false);
 
+  const refreshPage = async () =>{
+    customerService.getAllCustomers({page:1, limit:20})
+    .then(response=>{
+      if (response.status < 400 && response.data) {
+        setResData(response.data);
+        setCustomers(response.data.docs);
+        setPage(1);
+      } else {
+        dispatch(setNotification({text:response.message, type:"error"}))
+      }
+    })
+  }
+
 
   useEffect(()=>{
     customerService.getAllCustomers({page:page, limit:20})
@@ -75,7 +88,7 @@ export default function CInfo() {
           </select>
         </div>
         <div className='flex flex-nowrap w-[30%] justify-end'>
-        <button onClick={()=>setPage(1)}
+        <button onClick={refreshPage}
          className='bg-blue-600 py-2 px-3 text-white font-bold rounded-lg hover:bg-blue-500 mr-3'>
           Refresh
         </button>

@@ -3,12 +3,15 @@ import { entryService } from '../apiServices/entryService';
 import { setNotification } from '../store/notificaionSlice';
 import { useDispatch } from 'react-redux';
 import CreateReport from './CreateReport';
+import EditReport from './EditReport';
+import ViewReport from './ViewReport';
 
-export default function ReportCard({report,index,setReports,setPage}) {
+export default function ReportCard({report,index,setReports,refreshPage}) {
     const date = new Date(report.createdAt);
     const dispatch = useDispatch();
     const [showCreateReport, setShowCreateReport] = useState(false);
     const [showEitReport, setShowEditReport] = useState(false);
+    const [showViewReport, setShowViewReport] = useState(false);
 
     const ShowEditOrCreateForm = ()=>{
         if (report.report.length === 0) {
@@ -42,7 +45,7 @@ return (
         <div className='flex flex-nowrap justify-between mt-3'>
 
             {report.report.length !== 0 && 
-            <button 
+            <button onClick={()=>setShowViewReport(true)}
             className='py-2 font-semibold px-3 rounded-xl text-white bg-blue-600 hover:bg-blue-500'>
                 View
             </button>}
@@ -57,8 +60,12 @@ return (
                 Delete
             </button>
         </div>
-        {showCreateReport && 
-        <CreateReport setShowCreateReport={setShowCreateReport} amount={report.amount} eId={report._id} setPage={setPage} />}
+        {showCreateReport && report.report.length ===0 &&
+        <CreateReport setShowCreateReport={setShowCreateReport} amount={report.amount} eId={report._id} refreshPage={refreshPage} />}
+        {showEitReport && report.report.length !==0 &&
+        <EditReport setShowEditReport={setShowEditReport} report={report.report[0]} amount={report.amount} refreshPage={refreshPage} />}
+        {showViewReport && report.report.length !==0 &&
+        <ViewReport setShowViewReport={setShowViewReport} report={report} refreshPage={refreshPage} />}
     </div>
   )
 }

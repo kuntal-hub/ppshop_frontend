@@ -2,80 +2,82 @@ import React, { useState, useEffect } from 'react'
 import Input from './Input'
 import { useSelector, useDispatch } from 'react-redux'
 import MainContainer from './MainContainer'
-import { reportService } from "../apiServices/reportService.js"
-import { balanceService } from "../apiServices/balanceService.js"
+import {reportService} from "../apiServices/reportService.js"
+import {balanceService} from "../apiServices/balanceService.js"
 import { setNotification } from '../store/notificaionSlice'
 import { updateBalance } from '../store/balanceSlice'
 
-export default function CreateReport({ setShowCreateReport, amount, eId, refreshPage }) {
+export default function EditReport({ setShowEditReport, amount, report,refreshPage }) {
     const dispatch = useDispatch();
-    const [fiveh, setFiveh] = useState(0);
-    const [twoh, setTwoh] = useState(0);
-    const [oneh, setOneh] = useState(0);
-    const [fifty, setFifty] = useState(0);
-    const [twenty, setTwenty] = useState(0);
-    const [ten, setTen] = useState(0);
-    const [others, setOthers] = useState(0);
+    const [fiveh, setFiveh] = useState(report.fiveh);
+    const [twoh, setTwoh] = useState(report.twoh);
+    const [oneh, setOneh] = useState(report.oneh);
+    const [fifty, setFifty] = useState(report.fifty);
+    const [twenty, setTwenty] = useState(report.twenty);
+    const [ten, setTen] = useState(report.ten);
+    const [others, setOthers] = useState(report.others);
     const balance = useSelector(state => state.balance.balance);
     const [isDisabled, setIsDisabled] = useState(false);
 
     const total = (isNaN(fiveh) ? 0 : fiveh * 500) + (isNaN(twoh) ? 0 : twoh * 200) + (isNaN(oneh) ? 0 : oneh * 100) + (isNaN(fifty) ? 0 : fifty * 50) + (isNaN(twenty) ? 0 : twenty * 20) + (isNaN(ten) ? 0 : ten * 10) + (isNaN(others) ? 0 : others);
 
-    const avalable500 = balance ? (isNaN(fiveh) ? balance.fiveh : fiveh + balance.fiveh) : 0;
-    const avalable200 = balance ? (isNaN(twoh) ? balance.twoh : twoh + balance.twoh) : 0;
-    const avalable100 = balance ? (isNaN(oneh) ? balance.oneh : oneh + balance.oneh) : 0;
-    const avalable50 = balance ? (isNaN(fifty) ? balance.fifty : fifty + balance.fifty) : 0;
-    const avalable20 = balance ? (isNaN(twenty) ? balance.twenty : twenty + balance.twenty) : 0;
-    const avalable10 = balance ? (isNaN(ten) ? balance.ten : ten + balance.ten) : 0;
-    const avalableOthers = balance ? (isNaN(others) ? balance.others : others + balance.others) : 0;
+    const avalable500 = balance ? (isNaN(fiveh) ? balance.fiveh : fiveh - report.fiveh + balance.fiveh) : 0;
+    const avalable200 = balance ? (isNaN(twoh) ? balance.twoh : twoh - report.twoh + balance.twoh) : 0;
+    const avalable100 = balance ? (isNaN(oneh) ? balance.oneh : oneh - report.oneh + balance.oneh) : 0;
+    const avalable50 = balance ? (isNaN(fifty) ? balance.fifty : fifty - report.fifty + balance.fifty) : 0;
+    const avalable20 = balance ? (isNaN(twenty) ? balance.twenty : twenty - report.twenty + balance.twenty) : 0;
+    const avalable10 = balance ? (isNaN(ten) ? balance.ten : ten - report.ten + balance.ten) : 0;
+    const avalableOthers = balance ? (isNaN(others) ? balance.others : others - report.others + balance.others) : 0;
 
-    useEffect(() => {
+    const avalabletotAlBalance = (avalable500*500)+(avalable200*200)+(avalable100*100)+(avalable50*50)+(avalable20*20)+(avalable10*10)+avalableOthers
+
+    useEffect(()=>{
         if (!balance) {
             balanceService.getBalance()
-                .then(res => {
-                    if (res.status < 400 && res.data) {
-                        dispatch(updateBalance(res.data))
-                    } else {
-                        dispatch(setNotification({ text: response.message, type: "error" }))
-                    }
-                })
+            .then(res=>{
+                if(res.status<400 && res.data){
+                    dispatch(updateBalance(res.data))
+                } else{
+                    dispatch(setNotification({text:response.message, type:"error"}))
+                }
+            })
         }
     })
 
-    const createReport = async () => {
-        if (total !== amount) {
-            dispatch(setNotification({ text: "Total amount is not equal to the payable amount", type: "error" }));
+    const updateReport = async()=>{
+        if(fiveh===report.fiveh && twoh===report.twoh && oneh===report.oneh && fifty===report.fifty && twenty===report.twenty && ten===report.ten && others===report.others){
+            dispatch(setNotification({text:"Nothing to update!", type:"info"}))
             return;
         }
-        if (avalable500 < 0) {
+        if (avalable500<0) {
             dispatch(setNotification({ text: "500 notes are not enough", type: "error" }));
             return;
         }
-        if (avalable200 < 0) {
+        if (avalable200<0) {
             dispatch(setNotification({ text: "200 notes are not enough", type: "error" }));
             return;
         }
-        if (avalable100 < 0) {
+        if (avalable100<0) {
             dispatch(setNotification({ text: "100 notes are not enough", type: "error" }));
             return;
         }
-        if (avalable50 < 0) {
+        if (avalable50<0) {
             dispatch(setNotification({ text: "50 notes are not enough", type: "error" }));
             return;
         }
-        if (avalable20 < 0) {
+        if (avalable20<0) {
             dispatch(setNotification({ text: "20 notes are not enough", type: "error" }));
             return;
         }
-        if (avalable10 < 0) {
+        if (avalable10<0) {
             dispatch(setNotification({ text: "10 notes are not enough", type: "error" }));
             return;
         }
-        if (avalableOthers < 0) {
+        if (avalableOthers<0) {
             dispatch(setNotification({ text: "Others coins are not enough", type: "error" }));
             return;
         }
-
+        
         setIsDisabled(true)
         const data = {
             fiveh: isNaN(fiveh) || fiveh==="" ? 0 : fiveh,
@@ -85,19 +87,19 @@ export default function CreateReport({ setShowCreateReport, amount, eId, refresh
             twenty: isNaN(twenty) || twenty==="" ? 0 : twenty,
             ten: isNaN(ten) || ten==="" ? 0 : ten,
             others: isNaN(others) || others==="" ? 0 : others,
-            eId: eId
+            rId: report._id
         }
 
-        const response = await reportService.createReport(data);
+        const response = await reportService.updateReport(data);
 
-        if (response.status < 400 && response.data) {
-            dispatch(setNotification({ text: response.message, type: "success" }))
+        if(response.status<400 && response.data){
+            dispatch(setNotification({text:response.message, type:"success"}))
             dispatch(updateBalance(response.data.balance))
-            setShowCreateReport(false);
+            setShowEditReport(false)
             refreshPage();
         } else {
             setIsDisabled(false)
-            dispatch(setNotification({ text: response.message, type: "error" }))
+            dispatch(setNotification({text:response.message, type:"error"}))
         }
     }
 
@@ -108,18 +110,18 @@ export default function CreateReport({ setShowCreateReport, amount, eId, refresh
                 <p className='m-0 p-0 text-center text-2xl inline-block'>
                     <strong>Amount Payable : </strong> {amount}
                 </p>
-                <button onClick={() => setShowCreateReport(false)} className=' float-right material-symbols-outlined text-right inline-block'>
+                <button onClick={() => setShowEditReport(false)} className=' float-right material-symbols-outlined text-right inline-block'>
                     close
                 </button>
             </div>
 
             <div className='w-full flex flex-nowrap justify-center'>
                 <div className='w-[50%] pt-3'>
-                    <p className='w-full text-center text-lg mb-2'>
-                        <strong>
-                            Payment Details
-                        </strong>
-                    </p>
+                <p className='w-full text-center text-lg mb-2'>
+                    <strong>
+                        Payment Details
+                    </strong>
+                </p>
 
                     <div className='w-full flex flex-nowrap justify-center'>
                         <div className="text-center w-[40%] mr-4">
@@ -268,10 +270,10 @@ export default function CreateReport({ setShowCreateReport, amount, eId, refresh
                         </div>
                     </div>
 
-                    <button onClick={createReport} disabled={isDisabled}
-                        className='text-center block mx-auto px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg font-semibold text-white mt-8'>
-                        Create Report
-                    </button>
+                    <button onClick={updateReport}  disabled={isDisabled}
+                    className='text-center block mx-auto px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg font-semibold text-white mt-8'>
+                Update Report
+            </button>
                 </div>
                 <div className='w-[50%] pt-3'>
                     <p className='w-full text-center text-lg mb-2'>
@@ -345,16 +347,16 @@ export default function CreateReport({ setShowCreateReport, amount, eId, refresh
                                 type="text"
                                 lable="Total Balance"
                                 labelClass="text-red-500 font-bold block mb-1"
-                                inputClass={`${(balance ? balance.total + total : total) < 0 ? "bg-red-300" : "bg-green-200"} text-black w-full py-3 px-4 font-semibold rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-300 ease-in-out`}
-                                value={balance ? balance.total + total : 0}
+                                inputClass={`${avalabletotAlBalance < 0 ? "bg-red-300" : "bg-green-200"} text-black w-full py-3 px-4 font-semibold rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-300 ease-in-out`}
+                                value={avalabletotAlBalance}
                                 readOnly={true}
                             />
                         </div>
                     </div>
                 </div>
             </div>
-
-
+            
+            
         </MainContainer>
     )
 }

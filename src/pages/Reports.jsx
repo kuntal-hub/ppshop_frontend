@@ -12,8 +12,20 @@ export default function Reports() {
   const dispatch = useDispatch();
   const [reports, setReports] = useState([]);
 
+  const refreshPage = async ()=>{
+    reportService.getAllReports({page:1, limit:20})
+    .then(response=>{
+      if (response.status < 400 && response.data) {
+        setResData(response.data);
+        setReports(response.data.docs);
+        setPage(1);
+      } else {
+        dispatch(setNotification({text:response.message, type:"error"}))
+      }
+    })
+  }
+
   useEffect(() => {
-    console.log(page)
     reportService.getAllReports({page:page, limit:20})
     .then(response=>{
       if (response.status < 400 && response.data) {
@@ -46,7 +58,7 @@ export default function Reports() {
             <div className='flex flex-wrap justify-center px-6 py-2'>
                 {
                   reports.map((report, index)=>(
-                    <ReportCard key={index} report={report} index={index} setReports={setReports} setPage={setPage} />
+                    <ReportCard key={index} report={report} index={index} setReports={setReports} refreshPage={refreshPage} />
                   ))
                 }
             </div>

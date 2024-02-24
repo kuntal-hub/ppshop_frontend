@@ -87,7 +87,7 @@ export default function CustomerForm({ setShowForm, setCustomers, customer, inde
 
     return (
         <div className='h-screen w-screen fixed top-0 left-0 grid place-content-center half_transparent'>
-            <div className='bg-white p-8 rounded-lg md:min-w-[50vw] lg:min-w-[40vw]'>
+            <div className='bg-white p-8 rounded-lg md:min-w-[50vw] lg:min-w-[40vw] text-center'>
                 <form onSubmit={handleSubmit(submit)}>
                     <Input
                         type='text'
