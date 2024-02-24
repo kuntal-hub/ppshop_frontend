@@ -9,6 +9,8 @@ import {
   ErrorPage,
   CInfo,
   Balance,
+  Entry,
+  Reports,
  } from "./index.js";
 
 const routes = createBrowserRouter(
@@ -18,6 +20,10 @@ const routes = createBrowserRouter(
       <Route path='' element={<CInfo />} />
 
       <Route path='balance' element={<Balance />} />
+
+      <Route path='entry' element={<Entry />} />
+
+      <Route path='reports' element={<Reports />} />
 
     </Route>
   )

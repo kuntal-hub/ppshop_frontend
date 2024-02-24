@@ -12,6 +12,8 @@ export default function CustomerCard({customer,index,setCustomers}) {
     const [showForm, setShowForm] = useState(false);
 
     const deleteCustomer = async ()=>{
+        const confirm = window.confirm("Are you sure you want to delete this customer?");
+        if (!confirm) return;
         const response = await customerService.deleteCustomer({cId:customer.cId});
         if (response.status < 400 && response.data) {
             setCustomers(priv=>priv.filter((c,i)=>i!==index));

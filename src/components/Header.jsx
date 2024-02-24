@@ -15,7 +15,7 @@ export default function Header() {
             Entry
         </NavLink>
 
-        <NavLink to={"/report"}
+        <NavLink to={"/reports"}
         className={`${({ isActive, isPending })=> isPending ? "pending" : isActive ? "active" : ""} pending`}
         >
             Report

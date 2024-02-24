@@ -39,6 +39,16 @@ export class ReportService {
             return {status:error.status, message: error.message, data: null};
         }
     }
+
+    async getAllReports({page=1, limit=20}) {
+        try {
+            const response = await axios.get(`/api/v1/report/all?page=${page}&limit=${limit}`);
+            return response.data;
+        } catch (error) {
+            console.log("Error in reportService.getAllReports", error);
+            return {status:error.status, message: error.message, data: null};
+        }
+    }
 }
 
 export const reportService = new ReportService();

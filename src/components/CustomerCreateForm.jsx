@@ -37,7 +37,7 @@ export default function CustomerForm({ setShowForm, setCustomers }) {
 
     const response = await customerService.createCustomer({
       name: data.name.trim(),
-      cId: cId.trim(),
+      cId: cId,
       aadhar: data.aadhar.trim(),
       address: data.address,
       phone: data.phone.trim(),
@@ -55,7 +55,7 @@ export default function CustomerForm({ setShowForm, setCustomers }) {
 
   const handelIdChenge = (e) => {
     setCIdError("");
-    setCId(e.target.value);
+    setCId(e.target.value.trim());
   }
 
   useEffect(() => {

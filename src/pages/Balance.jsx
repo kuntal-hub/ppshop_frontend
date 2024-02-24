@@ -52,7 +52,6 @@ export default function Balance() {
     }
 
     useEffect(()=>{
-        console.log(balance);
         if (!balance) {
             balanceService.getBalance()
             .then(response=>{
