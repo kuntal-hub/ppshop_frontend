@@ -84,6 +84,8 @@ export default function Entry() {
                     })
             }, 800);
             return () => clearTimeout(timeout);
+        } else {
+            setCustomer(null);
         }
     }, [customerId])
 
@@ -182,7 +184,7 @@ export default function Entry() {
                         onChange={(e)=>setAmount(e.target.value.trim())}
                     />
 
-                    <button onClick={createEntry}
+                    <button onClick={createEntry} disabled={isDisabled}
                     className='text-white hover:bg-green-500 bg-green-600 py-3 px-6 rounded-lg font-semibold mt-6'>
                         Create Entry
                     </button>

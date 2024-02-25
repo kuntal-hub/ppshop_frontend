@@ -40,7 +40,7 @@ export default function CreateReport({ setShowCreateReport, amount, eId, refresh
                     }
                 })
         }
-    })
+    },[])
 
     const createReport = async () => {
         if (total !== amount) {

@@ -93,6 +93,11 @@ export default function ViewCustomer() {
 
           </div>
           <h1 className='text-2xl my-4 font-bold'>Customer's Entries</h1>
+
+        {
+          customer.entries.length === 0 && <p className='text-lg text-red-500 mt-9 font-bold'>No Entry Created </p>
+        }
+
           <div className='w-full flex flex-wrap justify-center'>
             {
               customer.entries.map((entry, index) => {

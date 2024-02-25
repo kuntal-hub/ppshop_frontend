@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Input from './Input'
 import { useSelector, useDispatch } from 'react-redux'
 import MainContainer from './MainContainer'
-import {reportService} from "../apiServices/reportService.js"
-import {balanceService} from "../apiServices/balanceService.js"
+import { reportService } from "../apiServices/reportService.js"
+import { balanceService } from "../apiServices/balanceService.js"
 import { setNotification } from '../store/notificaionSlice'
 import { updateBalance } from '../store/balanceSlice'
 
@@ -42,7 +42,7 @@ export default function EditReport({ setShowEditReport, amount, report,refreshPa
                 }
             })
         }
-    })
+    },[])
 
     const updateReport = async()=>{
         if(fiveh===report.fiveh && twoh===report.twoh && oneh===report.oneh && fifty===report.fifty && twenty===report.twenty && ten===report.ten && others===report.others){

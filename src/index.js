@@ -4,6 +4,7 @@ import Balance from "./pages/Balance";
 import Entry from "./pages/Entry";
 import Reports from "./pages/Reports.jsx";
 import ViewCustomer from "./pages/ViewCustomer.jsx";
+import Account from "./pages/Account.jsx";
 
 export {
     ErrorPage,
@@ -12,4 +13,5 @@ export {
     Entry,
     Reports,
     ViewCustomer,
+    Account,
 }
