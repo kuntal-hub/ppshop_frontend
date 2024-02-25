@@ -15,8 +15,7 @@ export default function Account() {
       .then(res => {
         if (res.status < 400 && res.data) {
           setAccounts(res.data);
-          setLoading(false);
-          console.log(res)
+          setLoading(false);  
         }
       })
   }, [])
