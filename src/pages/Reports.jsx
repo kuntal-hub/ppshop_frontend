@@ -44,8 +44,18 @@ export default function Reports() {
   return (
     <MainContainer>
       <div className='w-full h-full'>
-
       { resData && <div className='w-full h-full'>
+        <div className='flex flex-nowrap justify-between w-full'>
+            <button className='bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg mt-2 ml-3'>
+              Delete All
+            </button>
+            <h1 className=' text-2xl font-bold mt-2'>
+              All Reports 
+            </h1>
+            <button className='bg-green-600 hover:bg-green-500 text-white font-semibold py-2 px-4 rounded-lg mt-2 mr-3'>
+              Download 
+            </button>
+        </div>
           <InfiniteScroll
           dataLength={reports.length}
           next={()=>setPage(page+1)}

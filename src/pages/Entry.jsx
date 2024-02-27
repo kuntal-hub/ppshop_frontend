@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import MainContainer from '../components/MainContainer'
 import { entryService } from "../apiServices/entryService.js";
 import { customerService } from "../apiServices/customerService.js";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from '../store/notificaionSlice'
+import { updateAccounts } from '../store/accountSlice.js';
 
 export default function Entry() {
     const dispatch = useDispatch();
@@ -15,7 +16,9 @@ export default function Entry() {
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
     const [amount,setAmount] = useState(0);
+    const [accountId, setAccountId] = useState("cash");
     const [isDisabled, setIsDisabled] = useState(false);
+    const accounts = useSelector(state => state.accounts.accounts);
 
     const className = 'bg-gray-100 text-black w-full py-3 px-4 font-semibold rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out'
 
@@ -27,7 +30,7 @@ export default function Entry() {
         let response;
         if (customer) {
             setIsDisabled(true);
-            response = await entryService.createEntry({customer_id:customer._id,amount:Number.parseInt(amount)})
+            response = await entryService.createEntry({customer_id:customer._id,amount:Number.parseInt(amount),accountId})
         } else if(!customer){
             if (customerIdError !== "Customer not found!") {
                 dispatch(setNotification({text:"Invalid Customer Id!",type:"error"}))  
@@ -48,12 +51,20 @@ export default function Entry() {
                 name:name,
                 aadhar:aadhar,
                 phone:phone.trim(),
-                address:address
+                address:address,
+                accountId:accountId,
             })
         }
 
         if(response.status<400 && response.data){
             dispatch(setNotification({text:response.message,type:"success"}))
+            dispatch(updateAccounts(accounts.map(acc => {
+                if (acc._id === accountId) {
+                    return { ...acc, balance: acc.balance - Number.parseInt(amount)}
+                }
+                return acc;
+            }))
+            )
             setCustomer(null);
             setCustomerId("");
             setCustomerIdError("");
@@ -61,6 +72,7 @@ export default function Entry() {
             setAadhar("");
             setPhone("");
             setAddress("");
+            setAccountId("cash");
             setAmount(0);
             setIsDisabled(false);
         }else {
@@ -91,7 +103,7 @@ export default function Entry() {
 
     return (
         <MainContainer>
-            <div className='mx-auto sm:w-[80%] md:w-[50%] lg:w-[35%] pt-6'>
+            <div className='mx-auto sm:w-[80%] md:w-[50%] lg:w-[35%] pt-2'>
 
                     <label htmlFor="customerId"
                         className='text-black font-semibold block mb-1'
@@ -183,6 +195,25 @@ export default function Entry() {
                         value={amount}
                         onChange={(e)=>setAmount(e.target.value.trim())}
                     />
+                    <div className='flex flex-nowrap w-full justify-center mt-2'>
+                        <label htmlFor="payFrom"
+                        className='text-black font-bold block mb-1 mt-2 w-1/3 text-center '
+                        > Pay From :</label>
+                        <select name="payFrom" id="payFrom"
+                        value={accountId}
+                        onChange={(e)=>setAccountId(e.target.value)}
+                        className='bg-gray-100 text-black w-full py-2 px-4 font-semibold rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out ml-[1px]'
+                        >
+                            <option value="cash">Cash</option>
+                            {
+                                accounts.map((account) => {
+                                    return (
+                                        <option key={account._id} value={account._id}>{account.name} (Rs.{account.balance})</option>
+                                    )
+                                })
+                            }
+                        </select>
+                    </div>
 
                     <button onClick={createEntry} disabled={isDisabled}
                     className='text-white hover:bg-green-500 bg-green-600 py-3 px-6 rounded-lg font-semibold mt-6'>

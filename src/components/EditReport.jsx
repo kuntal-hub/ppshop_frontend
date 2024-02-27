@@ -49,6 +49,10 @@ export default function EditReport({ setShowEditReport, amount, report,refreshPa
             dispatch(setNotification({text:"Nothing to update!", type:"info"}))
             return;
         }
+        if (total !== amount) {
+            dispatch(setNotification({ text: "Total amount is not equal to the payable amount", type: "error" }));
+            return;
+        }
         if (avalable500<0) {
             dispatch(setNotification({ text: "500 notes are not enough", type: "error" }));
             return;

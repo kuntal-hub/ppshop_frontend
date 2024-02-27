@@ -9,6 +9,7 @@ export default function CustomerEntryCard({ entry, refreshPage }) {
     return (
         <div className=' w-72 m-4 bg-white text-start p-5 rounded-2xl'>
             <p className='pb-2'><strong>Amount :</strong> {entry.amount}</p>
+            <p className='pb-2'><strong>Pay From :</strong> {entry.from}</p>
             <p className='pb-2'><strong>Date :</strong> {date.toLocaleString()}</p>
 
             <p className='text-center font-bold pb-3'>Details :</p>

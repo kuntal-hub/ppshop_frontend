@@ -89,12 +89,12 @@ export class CustomerService {
         }
     }
 
-    async getCustomerById({cId}){
+    async getCustomerById({cId,page=1, limit=20}){
         try {
             if(!cId){
                 throw new Error("Please Provide Customer Id")
             }
-            const response = await axios.get(`/api/v1/customerInfo/get/${cId}`)
+            const response = await axios.get(`/api/v1/customerInfo/get/${cId}?page=${page}&limit=${limit}`)
             return response.data;
         } catch (error) {
             console.log("Error in getCustomerById", error);

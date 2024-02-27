@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export class EntryService {
-    async createEntry({ customer_id, amount, cId, name, aadhar, phone, address="" }) {
+    async createEntry({ customer_id, amount, cId, name, aadhar, phone, address="",accountId="cash" }) {
         try {
             if (!amount) {
                 throw new Error("Please provide amount");
@@ -20,9 +20,9 @@ export class EntryService {
                 if (phone.length < 10) {
                     throw new Error("Invalid phone number");
                 }
-                response = await axios.post("/api/v1/entry/create", { amount, cId, name, aadhar, phone, address });
+                response = await axios.post("/api/v1/entry/create", { amount, cId, name, aadhar, phone, address, accountId });
             } else if (customer_id) {
-                response = await axios.post("/api/v1/entry/create", { amount, customer_id });
+                response = await axios.post("/api/v1/entry/create", { amount, customer_id, accountId });
             } else {
                 throw new Error("Invalid request");
             }
@@ -40,6 +40,16 @@ export class EntryService {
             return response.data;
         } catch (error) {
             console.log("Error in entryService.deleteEntry", error);
+            return {status:error.status, message: error.message, data: null};
+        }
+    }
+
+    async deleteAllEntries() {
+        try {
+            const response = await axios.delete("/api/v1/entry/delete/all");
+            return response.data;
+        } catch (error) {
+            console.log("Error in entryService.deleteAllEntries", error);
             return {status:error.status, message: error.message, data: null};
         }
     }

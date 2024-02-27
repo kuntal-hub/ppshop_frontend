@@ -3,9 +3,12 @@ import CreateAndEditAccount from './CreateAndEditAccount'
 import { accountService } from '../apiServices/accountService';
 import { useDispatch } from 'react-redux';
 import { setNotification } from '../store/notificaionSlice';
+import { updateAccounts } from '../store/accountSlice';
+import { useSelector } from 'react-redux';
 
 export default function AccountBalanceCard({account, setAccounts}) {
     const [showCreateAccount, setShowCreateAccount] = useState(false);
+    const accounts = useSelector(state=>state.accounts.accounts);
     const dispatch = useDispatch();
 
     const deleteAccount = async ()=>{
@@ -14,6 +17,7 @@ export default function AccountBalanceCard({account, setAccounts}) {
         const response = await accountService.deleteAccount({accountId:account._id});
         if (response.status < 400 && response.data) {
             setAccounts(priv=>priv.filter((acc,i)=>acc._id!==account._id));
+            dispatch(updateAccounts(accounts.filter((acc,i)=>acc._id!==account._id)));
             dispatch(setNotification({text:response.message, type:"success"}))
         } else {
             dispatch(setNotification({text:response.message, type:"error"}))

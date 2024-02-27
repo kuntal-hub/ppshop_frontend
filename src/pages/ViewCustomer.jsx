@@ -6,21 +6,27 @@ import { setNotification } from "../store/notificaionSlice"
 import { useDispatch } from "react-redux"
 import CustomerEntryCard from '../components/CustomerEntryCard'
 import Input from '../components/Input'
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 export default function ViewCustomer() {
   const dispatch = useDispatch()
   const navigate = useNavigate();
   const [customer, setCustomer] = useState(null);
+  const [entries, setEntries] = useState([]);
+  const [resData, setResData] = useState(null)
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const { cId } = useParams()
 
   const refreshPage = () => {
     setLoading(true);
-    customerService.getCustomerById({ cId: cId })
+    customerService.getCustomerById({ cId: cId,page:1,limit:20 })
       .then(res => {
         if (res.status < 400 && res.data) {
-          setCustomer(res.data)
+          setResData(res.data.entries);
+          setEntries(res.data.entries.docs);
           setLoading(false);
+          setPage(1);
         } else {
           dispatch(setNotification({ text: res.message, type: "error" }))
           setLoading(false)
@@ -30,10 +36,16 @@ export default function ViewCustomer() {
   }
 
   useEffect(() => {
-    customerService.getCustomerById({ cId: cId })
+    customerService.getCustomerById({ cId: cId,page:page,limit:20 })
       .then(res => {
         if (res.status < 400 && res.data) {
-          setCustomer(res.data)
+          setCustomer(res.data.customer);
+          setResData(res.data.entries);
+          if (page === 1) {
+            setEntries(res.data.entries.docs);
+          } else {
+            setEntries(priv => priv.concat(res.data.entries.docs));
+          }
           setLoading(false);
         } else {
           dispatch(setNotification({ text: res.message, type: "error" }))
@@ -41,7 +53,7 @@ export default function ViewCustomer() {
           navigate("/error")
         }
       })
-  }, [cId])
+  }, [cId,page])
   return (
     <MainContainer>
       {loading ?
@@ -53,58 +65,68 @@ export default function ViewCustomer() {
           <div className='flex flex-nowrap justify-center w-full'>
             <div className="w-[50%]">
               <div className='w-[80%] mx-auto'>
-                  <Input
+                <Input
                   type="text"
                   lable="Name"
                   value={customer.name}
                   readOnly={true}
-                  />
-                  <Input
+                />
+                <Input
                   type="text"
                   lable="Aadhar"
                   value={customer.aadhar}
                   readOnly={true}
-                  />
-                  <Input
+                />
+                <Input
                   type="text"
                   lable="Address"
                   value={customer.address}
                   readOnly={true}
-                  />
+                />
 
               </div>
             </div>
             <div className="w-[50%]">
               <div className='w-[80%] mx-auto'>
-              <Input
+                <Input
                   type="text"
                   lable="ID"
                   value={customer.cId}
                   readOnly={true}
-                  />
-                  <Input
+                />
+                <Input
                   type="text"
                   lable="Phone"
                   value={customer.phone}
                   readOnly={true}
-                  />
+                />
               </div>
             </div>
 
           </div>
           <h1 className='text-2xl my-4 font-bold'>Customer's Entries</h1>
 
-        {
-          customer.entries.length === 0 && <p className='text-lg text-red-500 mt-9 font-bold'>No Entry Created </p>
-        }
+          {
+            entries.length === 0 && <p className='text-lg text-red-500 mt-9 font-bold'>No Entry Created </p>
+          }
 
+          <InfiniteScroll
+            dataLength={entries.length}
+            next={() => setPage(page + 1)}
+            hasMore={resData.hasNextPage}
+            loader={<h4 className='w-full text-center'>Loading...</h4>}
+            endMessage={
+              <p className='w-full text-center'>No More Data</p>
+            }
+          >
           <div className='w-full flex flex-wrap justify-center'>
             {
-              customer.entries.map((entry, index) => {
+              entries.map((entry, index) => {
                 return <CustomerEntryCard key={index} entry={entry} refreshPage={refreshPage} />
               })
             }
           </div>
+            </InfiniteScroll>
         </div>
       }
     </MainContainer>

@@ -3,7 +3,9 @@ import Header from './components/Header';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateBalance } from './store/balanceSlice';
+import {updateAccounts} from "./store/accountSlice"
 import { balanceService } from './apiServices/balanceService';
+import { accountService } from './apiServices/accountService';
 import Notification from './components/Notification';
 import { Outlet } from 'react-router-dom';
 
@@ -17,11 +19,17 @@ function App() {
     .then(response=>{
       if (response.status < 400 && response.data) {
         dispatch(updateBalance(response.data));
-        setLoading(false);
-      } else{
-        setLoading(false);
       }
     })
+    .then(()=>{
+      accountService.getAccounts()
+      .then(response=>{
+        if(response.status < 400 && response.data){
+          dispatch(updateAccounts(response.data))
+        }
+      })
+    })
+    .finally(()=>setLoading(false))
   },[])
 
   return (

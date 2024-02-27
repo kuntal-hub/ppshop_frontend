@@ -3,11 +3,14 @@ import MainContainer from '../components/MainContainer'
 import { accountService } from '../apiServices/accountService';
 import CreateAndEditAccount from '../components/CreateAndEditAccount';
 import AccountBalanceCard from '../components/AccountBalanceCard';
+import { useDispatch } from 'react-redux';
+import { updateAccounts } from '../store/accountSlice';
 
 
 export default function Account() {
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   const [showCreateAccount, setShowCreateAccount] = useState(false);
 
   useEffect(() => {
@@ -15,6 +18,7 @@ export default function Account() {
       .then(res => {
         if (res.status < 400 && res.data) {
           setAccounts(res.data);
+          dispatch(updateAccounts(res.data));
           setLoading(false);  
         }
       })
