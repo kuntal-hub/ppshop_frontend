@@ -62,9 +62,9 @@ return (
             </button>
         </div>
         {showCreateReport && report.report.length ===0 &&
-        <CreateReport setShowCreateReport={setShowCreateReport} amount={report.amount} eId={report._id} refreshPage={refreshPage} />}
+        <CreateReport setShowCreateReport={setShowCreateReport} report={report} amount={report.amount} eId={report._id} refreshPage={refreshPage} />}
         {showEitReport && report.report.length !==0 &&
-        <EditReport setShowEditReport={setShowEditReport} report={report.report[0]} amount={report.amount} refreshPage={refreshPage} />}
+        <EditReport setShowEditReport={setShowEditReport} report={report.report[0]} entry={report} amount={report.amount} refreshPage={refreshPage} />}
         {showViewReport && report.report.length !==0 &&
         <ViewReport setShowViewReport={setShowViewReport} report={report} refreshPage={refreshPage} />}
     </div>

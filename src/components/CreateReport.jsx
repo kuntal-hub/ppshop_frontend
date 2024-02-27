@@ -6,8 +6,9 @@ import { reportService } from "../apiServices/reportService.js"
 import { balanceService } from "../apiServices/balanceService.js"
 import { setNotification } from '../store/notificaionSlice'
 import { updateBalance } from '../store/balanceSlice'
+import Slip from './Slip.jsx'
 
-export default function CreateReport({ setShowCreateReport, amount, eId, refreshPage }) {
+export default function CreateReport({ setShowCreateReport,report, amount, eId, refreshPage }) {
     const dispatch = useDispatch();
     const [fiveh, setFiveh] = useState(0);
     const [twoh, setTwoh] = useState(0);
@@ -16,6 +17,7 @@ export default function CreateReport({ setShowCreateReport, amount, eId, refresh
     const [twenty, setTwenty] = useState(0);
     const [ten, setTen] = useState(0);
     const [others, setOthers] = useState(0);
+    const [showGenarateSlip,setShowGenarateSlip] = useState(false);
     const balance = useSelector(state => state.balance.balance);
     const [isDisabled, setIsDisabled] = useState(false);
 
@@ -104,11 +106,15 @@ export default function CreateReport({ setShowCreateReport, amount, eId, refresh
     return (
         <MainContainer>
 
-            <div className='m-0 text-center p-3'>
-                <p className='m-0 p-0 text-center text-2xl inline-block'>
+            <div className='m-0 text-center p-3 flex flex-nowrap justify-between'>
+                <button onClick={()=>setShowGenarateSlip(true)}
+                className='text-center block px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg font-semibold text-white'>
+                    Download Slip
+                </button>
+                <p className='m-0 p-0 text-center text-2xl block'>
                     <strong>Amount Payable : </strong> {amount}
                 </p>
-                <button onClick={() => setShowCreateReport(false)} className=' float-right material-symbols-outlined text-right inline-block'>
+                <button onClick={() => setShowCreateReport(false)} className='material-symbols-outlined text-right block'>
                     close
                 </button>
             </div>
@@ -353,7 +359,11 @@ export default function CreateReport({ setShowCreateReport, amount, eId, refresh
                     </div>
                 </div>
             </div>
-
+            {showGenarateSlip && 
+                <Slip report={report} setShowGenarateSlip={setShowGenarateSlip}
+                notes={{fiveh,twoh,oneh,fifty,twenty,ten,others}}
+                />
+            }
 
         </MainContainer>
     )

@@ -12,6 +12,8 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
     "axios": "^1.6.7",
+    "html-to-image": "^1.11.11",
+    "jspdf": "^2.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.1",

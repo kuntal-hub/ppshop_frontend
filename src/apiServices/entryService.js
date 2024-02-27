@@ -46,7 +46,7 @@ export class EntryService {
 
     async deleteAllEntries() {
         try {
-            const response = await axios.delete("/api/v1/entry/delete/all");
+            const response = await axios.delete("/api/v1/entry/alldelete");
             return response.data;
         } catch (error) {
             console.log("Error in entryService.deleteAllEntries", error);

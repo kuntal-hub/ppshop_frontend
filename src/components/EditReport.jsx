@@ -6,8 +6,9 @@ import { reportService } from "../apiServices/reportService.js"
 import { balanceService } from "../apiServices/balanceService.js"
 import { setNotification } from '../store/notificaionSlice'
 import { updateBalance } from '../store/balanceSlice'
+import Slip from './Slip.jsx'
 
-export default function EditReport({ setShowEditReport, amount, report,refreshPage }) {
+export default function EditReport({ setShowEditReport, amount,entry, report,refreshPage }) {
     const dispatch = useDispatch();
     const [fiveh, setFiveh] = useState(report.fiveh);
     const [twoh, setTwoh] = useState(report.twoh);
@@ -18,6 +19,7 @@ export default function EditReport({ setShowEditReport, amount, report,refreshPa
     const [others, setOthers] = useState(report.others);
     const balance = useSelector(state => state.balance.balance);
     const [isDisabled, setIsDisabled] = useState(false);
+    const [showGenarateSlip,setShowGenarateSlip] = useState(false);
 
     const total = (isNaN(fiveh) ? 0 : fiveh * 500) + (isNaN(twoh) ? 0 : twoh * 200) + (isNaN(oneh) ? 0 : oneh * 100) + (isNaN(fifty) ? 0 : fifty * 50) + (isNaN(twenty) ? 0 : twenty * 20) + (isNaN(ten) ? 0 : ten * 10) + (isNaN(others) ? 0 : others);
 
@@ -110,11 +112,15 @@ export default function EditReport({ setShowEditReport, amount, report,refreshPa
     return (
         <MainContainer>
 
-            <div className='m-0 text-center p-3'>
-                <p className='m-0 p-0 text-center text-2xl inline-block'>
+            <div className='m-0 text-center p-3 flex flex-nowrap justify-between'>
+            <button onClick={()=>setShowGenarateSlip(true)}
+                className='text-center block px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg font-semibold text-white'>
+                    Download Slip
+                </button>
+                <p className='m-0 p-0 text-center text-2xl block'>
                     <strong>Amount Payable : </strong> {amount}
                 </p>
-                <button onClick={() => setShowEditReport(false)} className=' float-right material-symbols-outlined text-right inline-block'>
+                <button onClick={() => setShowEditReport(false)} className='material-symbols-outlined text-right block'>
                     close
                 </button>
             </div>
@@ -359,6 +365,12 @@ export default function EditReport({ setShowEditReport, amount, report,refreshPa
                     </div>
                 </div>
             </div>
+
+            {showGenarateSlip && 
+                <Slip report={entry} setShowGenarateSlip={setShowGenarateSlip}
+                notes={{fiveh,twoh,oneh,fifty,twenty,ten,others}}
+                />
+            }
             
             
         </MainContainer>

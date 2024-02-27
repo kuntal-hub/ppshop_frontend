@@ -5,12 +5,14 @@ import MainContainer from "../components/MainContainer.jsx"
 import { setNotification } from '../store/notificaionSlice.js'
 import ReportCard from '../components/ReportCard.jsx'
 import InfiniteScroll from 'react-infinite-scroll-component';
+import DeleteAllEntry from '../components/DeleteAllEntry.jsx'
 
 export default function Reports() {
   const [resData, setResData] = useState(null)
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const [reports, setReports] = useState([]);
+  const [showDeleteAllComponent, setShowDeleteAllComponent] = useState(false);
 
   const refreshPage = async ()=>{
     reportService.getAllReports({page:1, limit:20})
@@ -46,7 +48,8 @@ export default function Reports() {
       <div className='w-full h-full'>
       { resData && <div className='w-full h-full'>
         <div className='flex flex-nowrap justify-between w-full'>
-            <button className='bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg mt-2 ml-3'>
+            <button onClick={()=>setShowDeleteAllComponent(!showDeleteAllComponent)}
+            className='bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg mt-2 ml-3'>
               Delete All
             </button>
             <h1 className=' text-2xl font-bold mt-2'>
@@ -74,7 +77,7 @@ export default function Reports() {
             </div>
           </InfiniteScroll>
       </div>}
-
+                {showDeleteAllComponent && <DeleteAllEntry setShowDeleteAllComponent={setShowDeleteAllComponent} refreshPage={refreshPage} />}
       </div>
     </MainContainer>
   )
