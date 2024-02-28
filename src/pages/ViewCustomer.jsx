@@ -126,7 +126,7 @@ export default function ViewCustomer() {
           <div className='w-full flex flex-wrap justify-center'>
             {
               entries.map((entry, index) => {
-                return <CustomerEntryCard key={index} entry={entry} refreshPage={refreshPage} />
+                return <CustomerEntryCard key={index} entry={entry} customer={customer} refreshPage={refreshPage} />
               })
             }
           </div>

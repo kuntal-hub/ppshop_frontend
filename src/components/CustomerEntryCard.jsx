@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import CreateReport from './CreateReport';
 import EditReport from './EditReport';
 
-export default function CustomerEntryCard({ entry, refreshPage }) {
+export default function CustomerEntryCard({ entry, refreshPage, customer }) {
     const date = new Date(entry.createdAt);
     const [showCreateReport, setShowCreateReport] = useState(false)
     const [showEitReport, setShowEditReport] = useState(false);
@@ -52,7 +52,8 @@ export default function CustomerEntryCard({ entry, refreshPage }) {
                     eId={entry._id}
                     setShowCreateReport={setShowCreateReport}
                     amount={entry.amount}
-                    refreshPage={refreshPage} />
+                    refreshPage={refreshPage}
+                    report={{...entry,owner:customer}} />
             }
             {
                 showEitReport &&
@@ -60,7 +61,8 @@ export default function CustomerEntryCard({ entry, refreshPage }) {
                     setShowEditReport={setShowEditReport}
                     report={entry.report[0]}
                     amount={entry.amount}
-                    refreshPage={refreshPage} />
+                    refreshPage={refreshPage}
+                    entry={{...entry,owner:customer}} />
             }
 
         </div>

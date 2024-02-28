@@ -20,7 +20,7 @@ export default function EditReport({ setShowEditReport, amount,entry, report,ref
     const balance = useSelector(state => state.balance.balance);
     const [isDisabled, setIsDisabled] = useState(false);
     const [showGenarateSlip,setShowGenarateSlip] = useState(false);
-
+    const payableAmount = amount<0 ? Number.parseInt(String(amount).replace("-","")) : Number.parseInt("-"+amount)
     const total = (isNaN(fiveh) ? 0 : fiveh * 500) + (isNaN(twoh) ? 0 : twoh * 200) + (isNaN(oneh) ? 0 : oneh * 100) + (isNaN(fifty) ? 0 : fifty * 50) + (isNaN(twenty) ? 0 : twenty * 20) + (isNaN(ten) ? 0 : ten * 10) + (isNaN(others) ? 0 : others);
 
     const avalable500 = balance ? (isNaN(fiveh) ? balance.fiveh : fiveh - report.fiveh + balance.fiveh) : 0;
@@ -51,7 +51,7 @@ export default function EditReport({ setShowEditReport, amount,entry, report,ref
             dispatch(setNotification({text:"Nothing to update!", type:"info"}))
             return;
         }
-        if (total !== amount) {
+        if (total !== payableAmount) {
             dispatch(setNotification({ text: "Total amount is not equal to the payable amount", type: "error" }));
             return;
         }
@@ -274,7 +274,7 @@ export default function EditReport({ setShowEditReport, amount,entry, report,ref
                             <input type="number"
                                 value={total}
                                 id="totalCount"
-                                className={`${total !== amount ? "bg-red-300" : "bg-green-200"} text-black w-full py-3 px-4 font-semibold rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-300 ease-in-out`}
+                                className={`${total !== payableAmount ? "bg-red-300" : "bg-green-200"} text-black w-full py-3 px-4 font-semibold rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-300 ease-in-out`}
                                 readOnly={true}
                             />
                         </div>

@@ -45,7 +45,7 @@ export default function Slip({ setShowGenarateSlip, report, notes }) {
                     defaultValue={report.owner.name} /></p>
 
                     <p><strong className='mr-2'>Aadhar :</strong> <input className="border-none outline-none"  type="text" 
-                    defaultValue={report.owner.aadhar} /></p>
+                    defaultValue={`XXXX XXXX ${report.owner.aadhar.slice(-4)}`} /></p>
 
                     <p><strong className='mr-2'>Phone :</strong> <input className="border-none outline-none"  type="text" 
                     defaultValue={report.owner.phone} /></p>

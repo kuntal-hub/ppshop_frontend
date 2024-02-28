@@ -45,7 +45,7 @@ export default function CreateAndEditAccount({ account, setShowCreateAccount, se
             }
         } else {
             // create account
-            const response = await accountService.createAccount({ name: data.name, balance: data.balance })
+            const response = await accountService.createAccount({ name: data.name.replaceAll(" ",""), balance: data.balance })
 
             if (response.status < 400 && response.data) {
                 dispatch(setNotification({ text: response.message, type: "success" }))
