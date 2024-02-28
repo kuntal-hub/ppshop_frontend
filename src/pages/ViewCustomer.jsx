@@ -105,6 +105,10 @@ export default function ViewCustomer() {
 
           </div>
           <h1 className='text-2xl my-4 font-bold'>Customer's Entries</h1>
+          <button onClick={()=>navigate(`/download/${cId}`)}
+            className='bg-green-600 hover:bg-green-500 block mx-auto text-white font-semibold py-2 px-4 rounded-lg'>
+              Download 
+            </button>
 
           {
             entries.length === 0 && <p className='text-lg text-red-500 mt-9 font-bold'>No Entry Created </p>

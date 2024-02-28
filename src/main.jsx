@@ -14,6 +14,7 @@ import {
   ViewCustomer,
   DownloadByDate,
   Account,
+  DownloadByCId,
  } from "./index.js";
 
 const routes = createBrowserRouter(
@@ -33,6 +34,8 @@ const routes = createBrowserRouter(
       <Route path='account' element={<Account />} />
 
       <Route path='download' element={<DownloadByDate />} />
+
+      <Route path='download/:cId' element={<DownloadByCId />} />
 
     </Route>
   )

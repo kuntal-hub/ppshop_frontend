@@ -6,6 +6,7 @@ import Reports from "./pages/Reports.jsx";
 import ViewCustomer from "./pages/ViewCustomer.jsx";
 import Account from "./pages/Account.jsx";
 import DownloadByDate from "./pages/DownloadByDate.jsx";
+import DownloadByCId from "./pages/DownloadByCId.jsx";
 
 export {
     ErrorPage,
@@ -16,4 +17,5 @@ export {
     ViewCustomer,
     Account,
     DownloadByDate,
+    DownloadByCId,
 }
