@@ -7,6 +7,8 @@ import { setNotification } from '../store/notificaionSlice'
 import { updateAccounts } from '../store/accountSlice.js';
 
 export default function Entry() {
+    const accounts = useSelector(state => state.accounts.accounts);
+    const balance = useSelector(state=>state.balance.balance);
     const dispatch = useDispatch();
     const [customer, setCustomer] = useState(null);
     const [customerId, setCustomerId] = useState("");
@@ -16,21 +18,21 @@ export default function Entry() {
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
     const [amount,setAmount] = useState(0);
-    const [accountId, setAccountId] = useState("cash");
+    const [remarks, setRemarks] = useState("");
+    const [accountId, setAccountId] = useState(accounts?.length>0 ? accounts[0]._id : "cash");
     const [isDisabled, setIsDisabled] = useState(false);
-    const accounts = useSelector(state => state.accounts.accounts);
 
     const className = 'bg-gray-100 text-black w-full py-3 px-4 font-semibold rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out'
 
     const createEntry = async ()=>{
-        if (Number.parseInt(amount) === 0 || !amount) {
-            dispatch(setNotification({text:"Enter Amount to create Entry!",type:"info"}))
+        if (Number.parseInt(amount) === 0 || !amount || isNaN(amount)) {
+            dispatch(setNotification({text:"Enter Valid Amount to create Entry!",type:"info"}))
             return;
         }
         let response;
         if (customer) {
             setIsDisabled(true);
-            response = await entryService.createEntry({customer_id:customer._id,amount:Number.parseInt(amount),accountId})
+            response = await entryService.createEntry({customer_id:customer._id,amount:Number.parseInt(amount),accountId,remarks})
         } else if(!customer){
             if (customerIdError !== "Customer not found!") {
                 dispatch(setNotification({text:"Invalid Customer Id!",type:"error"}))  
@@ -53,6 +55,7 @@ export default function Entry() {
                 phone:phone.trim(),
                 address:address,
                 accountId:accountId,
+                remarks:remarks,
             })
         }
 
@@ -126,7 +129,7 @@ export default function Entry() {
                             }
                         }}
                     /> <br />
-                    {customerIdError && <p className={`${customerIdError === "Customer Found!" ? "text-green-500" : "text-red-500"} font-semibold text-sm text-start`}>{customerIdError}</p>} <br />
+                    {customerIdError && <p className={`${customerIdError === "Customer Found!" ? "text-green-500" : "text-red-500"} font-semibold text-sm text-start`}>{customerIdError}</p>}
 
                     <label htmlFor="customerName" className='text-black font-semibold block mb-1' >
                         Customer Name :
@@ -204,19 +207,30 @@ export default function Entry() {
                         onChange={(e)=>setAccountId(e.target.value)}
                         className='bg-gray-100 text-black w-full py-2 px-4 font-semibold rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out ml-[1px]'
                         >
-                            <option value="cash">Cash</option>
-                            {
+                            { accounts &&
                                 accounts.map((account) => {
                                     return (
                                         <option key={account._id} value={account._id}>{account.name} (Rs.{account.balance})</option>
-                                    )
-                                })
-                            }
+                                        )
+                                    })
+                                }
+                            <option value="cash">Cash (Rs.{balance? balance.total : 0})</option>
                         </select>
                     </div>
 
+                    <div className='flex flex-nowrap w-full justify-center mt-2'>
+                        <label htmlFor="remarks"
+                        className='text-black font-bold block mb-1 mt-2 w-1/3 text-center '
+                        > Remarks :</label>
+                        <input name="remarks" id="remarks"
+                        value={remarks}
+                        onChange={(e)=>setRemarks(e.target.value)}
+                        className='bg-gray-100 text-black w-full py-2 px-4 font-semibold rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out ml-[1px]'
+                        />
+                    </div>
+
                     <button onClick={createEntry} disabled={isDisabled}
-                    className='text-white hover:bg-green-500 bg-green-600 py-3 px-6 rounded-lg font-semibold mt-6'>
+                    className='text-white hover:bg-green-500 bg-green-600 py-3 px-6 rounded-lg font-semibold mt-2'>
                         Create Entry
                     </button>
 

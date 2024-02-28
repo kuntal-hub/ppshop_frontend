@@ -22,7 +22,7 @@ export default function Slip({ setShowGenarateSlip, report, notes }) {
         htmlToImage.toPng(eleRef.current, { quality: 1.0, width: 355, height: 650 })
             .then(function (dataUrl) {
                 var pdf = new jsPDF('p', 'mm', 'a4');
-                pdf.addImage(dataUrl, 'PNG', 0, 0, 210, 297);
+                pdf.addImage(dataUrl, 'PNG', 0, 0, 70, 100);
                 pdf.save("download.pdf");
             });
     }
@@ -62,25 +62,25 @@ export default function Slip({ setShowGenarateSlip, report, notes }) {
                     
                     <hr />
                     <h2 className='text-center font-bold text-lg'>Notes</h2>
-                    {!isNaN(notes.fiveh) && notes.fiveh !=0 && <p><strong className='mr-2'>500 :</strong>  
+                    {!isNaN(notes.fiveh) && notes.fiveh !=0 && <p><strong className='mr-2'>500 *</strong>  
                     {String(notes.fiveh).replace("-","")}</p>}
 
-                    {!isNaN(notes.twoh) && notes.twoh !=0 && <p><strong className='mr-2'>200 :</strong> 
+                    {!isNaN(notes.twoh) && notes.twoh !=0 && <p><strong className='mr-2'>200 *</strong> 
                     {String(notes.twoh).replace("-","")}</p>}
 
-                    {!isNaN(notes.oneh) && notes.oneh !=0 && <p><strong className='mr-2'>100 :</strong> 
+                    {!isNaN(notes.oneh) && notes.oneh !=0 && <p><strong className='mr-2'>100 *</strong> 
                     {String(notes.oneh).replace("-","")}</p>}
 
-                    {!isNaN(notes.fifty) && notes.fifty !=0 && <p><strong className='mr-2'>50 :</strong> 
+                    {!isNaN(notes.fifty) && notes.fifty !=0 && <p><strong className='mr-2'>50 *</strong> 
                     {String(notes.fifty).replace("-","")}</p>}
 
-                    {!isNaN(notes.twenty) && notes.twenty !=0 && <p><strong className='mr-2'>20 :</strong> 
+                    {!isNaN(notes.twenty) && notes.twenty !=0 && <p><strong className='mr-2'>20 *</strong> 
                     {String(notes.twenty).replace("-","")}</p>}
 
-                    {!isNaN(notes.ten) && notes.ten !=0 && <p><strong className='mr-2'>10 :</strong> 
+                    {!isNaN(notes.ten) && notes.ten !=0 && <p><strong className='mr-2'>10 *</strong> 
                     {String(notes.ten).replace("-","")}</p>}
 
-                    {!isNaN(notes.others) && notes.others !=0 && <p><strong className='mr-2'>others :</strong> 
+                    {!isNaN(notes.others) && notes.others !=0 && <p><strong className='mr-2'>others *</strong> 
                     {String(notes.others).replace("-","")}</p>}
                     <br />
                     <p className='text-center font-bold'>VLE Name- Palash Panja</p>

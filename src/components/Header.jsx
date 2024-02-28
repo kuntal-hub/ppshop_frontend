@@ -24,7 +24,7 @@ export default function Header() {
         <NavLink to={"/balance"}
         className={`${({ isActive, isPending })=> isPending ? "pending" : isActive ? "active" : ""} pending`}
         >
-            Balance
+            Notes
         </NavLink>
 
         <NavLink to={"/account"}

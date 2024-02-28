@@ -113,6 +113,7 @@ export default function DownloadByDate() {
                                     <th>Address</th>
                                     <th>Amount</th>
                                     <th>Pay From</th>
+                                    <th>Remarks</th>
                                     <th>Date</th>
                                     <th> </th>
                                     <th>500</th>
@@ -131,10 +132,11 @@ export default function DownloadByDate() {
                                         <td>{report.owner.cId}</td>
                                         <td>{report.owner.aadhar}</td>
                                         <td>{report.owner.phone}</td>
-                                        <td>{report.owner.address}</td>
+                                        <td>{report.owner.address.slice(0,15)}</td>
                                         <td>{report.amount}</td>
                                         <td>{report.from}</td>
-                                        <td>{new Date(report.createdAt).toISOString().split('T')[0]}</td>
+                                        <td>{report.remarks.slice(0,16)}</td>
+                                        <td>{new Date(report.createdAt).toLocaleString()}</td>
                                         <td>
 
                                         </td>

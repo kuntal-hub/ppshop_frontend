@@ -40,6 +40,7 @@ return (
         <p className='pb-2'><strong>ID :</strong> {report.owner.cId}</p>
         <p className='pb-2'><strong>Phone :</strong> {report.owner.phone}</p>
         <p className='pb-2'><strong>Amount :</strong> {report.amount}</p>
+        <p className='pb-2'><strong>Remarks :</strong> {report.remarks}</p>
         <p className='pb-2'><strong>Pay From :</strong> {report.from}</p>
         <p className='pb-2'><strong>Date :</strong> {date.toLocaleString()}</p>
 

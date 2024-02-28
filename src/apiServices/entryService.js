@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export class EntryService {
-    async createEntry({ customer_id, amount, cId, name, aadhar, phone, address="",accountId="cash" }) {
+    async createEntry({ customer_id, amount, cId, name, aadhar, phone, address="",accountId="cash", remarks="" }) {
         try {
             if (!amount) {
                 throw new Error("Please provide amount");
@@ -20,9 +20,9 @@ export class EntryService {
                 if (phone.length < 10) {
                     throw new Error("Invalid phone number");
                 }
-                response = await axios.post("/api/v1/entry/create", { amount, cId, name, aadhar, phone, address, accountId });
+                response = await axios.post("/api/v1/entry/create", { amount, cId, name, aadhar, phone, address, accountId, remarks });
             } else if (customer_id) {
-                response = await axios.post("/api/v1/entry/create", { amount, customer_id, accountId });
+                response = await axios.post("/api/v1/entry/create", { amount, customer_id, accountId,remarks });
             } else {
                 throw new Error("Invalid request");
             }
