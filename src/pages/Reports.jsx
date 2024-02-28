@@ -5,7 +5,8 @@ import MainContainer from "../components/MainContainer.jsx"
 import { setNotification } from '../store/notificaionSlice.js'
 import ReportCard from '../components/ReportCard.jsx'
 import InfiniteScroll from 'react-infinite-scroll-component';
-import DeleteAllEntry from '../components/DeleteAllEntry.jsx'
+import DeleteAllEntry from '../components/DeleteAllEntry.jsx';
+import { useNavigate } from 'react-router-dom'
 
 export default function Reports() {
   const [resData, setResData] = useState(null)
@@ -13,6 +14,7 @@ export default function Reports() {
   const dispatch = useDispatch();
   const [reports, setReports] = useState([]);
   const [showDeleteAllComponent, setShowDeleteAllComponent] = useState(false);
+  const navigate = useNavigate();
 
   const refreshPage = async ()=>{
     reportService.getAllReports({page:1, limit:20})
@@ -55,7 +57,8 @@ export default function Reports() {
             <h1 className=' text-2xl font-bold mt-2'>
               All Reports 
             </h1>
-            <button className='bg-green-600 hover:bg-green-500 text-white font-semibold py-2 px-4 rounded-lg mt-2 mr-3'>
+            <button onClick={()=>navigate('/download')}
+            className='bg-green-600 hover:bg-green-500 text-white font-semibold py-2 px-4 rounded-lg mt-2 mr-3'>
               Download 
             </button>
         </div>

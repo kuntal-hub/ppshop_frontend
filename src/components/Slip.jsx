@@ -7,7 +7,7 @@ export default function Slip({ setShowGenarateSlip, report, notes }) {
     const date = new Date(report.createdAt);
 
     const downloadImg = () => {
-        htmlToImage.toPng(eleRef.current, { quality: 1.0, width: 355, height: 700 })
+        htmlToImage.toPng(eleRef.current, { quality: 1.0, width: 355, height: 650 })
             .then(function (dataUrl) {
                 var link = document.createElement('a');
                 link.download = `${report.owner.aadhar}.png`;
@@ -19,7 +19,7 @@ export default function Slip({ setShowGenarateSlip, report, notes }) {
     }
 
     const downloadPdf = () => {
-        htmlToImage.toPng(eleRef.current, { quality: 1.0, width: 355, height: 700 })
+        htmlToImage.toPng(eleRef.current, { quality: 1.0, width: 355, height: 650 })
             .then(function (dataUrl) {
                 var pdf = new jsPDF('p', 'mm', 'a4');
                 pdf.addImage(dataUrl, 'PNG', 0, 0, 210, 297);

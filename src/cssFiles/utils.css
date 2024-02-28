@@ -91,3 +91,23 @@
   .transparent_white{
     background-color: rgba(255, 255, 255, 0.816);
   }
+
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    background: #ffffff;
+  }
+  
+  td, th {
+    border: 1px solid #000000;
+    text-align: left;
+    padding: 4px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #eaeaea;
+  }
+
+  th {
+    background-color: #eaeaea;
+  }

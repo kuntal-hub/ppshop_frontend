@@ -5,6 +5,7 @@ import Entry from "./pages/Entry";
 import Reports from "./pages/Reports.jsx";
 import ViewCustomer from "./pages/ViewCustomer.jsx";
 import Account from "./pages/Account.jsx";
+import DownloadByDate from "./pages/DownloadByDate.jsx";
 
 export {
     ErrorPage,
@@ -14,4 +15,5 @@ export {
     Reports,
     ViewCustomer,
     Account,
+    DownloadByDate,
 }

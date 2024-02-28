@@ -53,6 +53,32 @@ export class EntryService {
             return {status:error.status, message: error.message, data: null};
         }
     }
+
+    async getEntriesByDate({date,page=1,limit=24}) {
+        try {
+            if (!date) {
+                throw new Error("Please provide date");
+            }
+            const response = await axios.get(`/api/v1/entry/date/${date}?page=${page}&limit=${limit}`);
+            return response.data;
+        } catch (error) {
+            console.log("Error in entryService.getEntriesByDate", error);
+            return {status:error.status, message: error.message, data: null};
+        }
+    }
+
+    async getAllEntriesByOwnerId({cId,page=1,limit=24}) {
+        try {
+            if (!cId) {
+                throw new Error("Please provide customer id");
+            }
+            const response = await axios.get(`/api/v1/entry/owner/${cId}?page=${page}&limit=${limit}`);
+            return response.data;
+        } catch (error) {
+            console.log("Error in entryService.getAllEntriesByOwnerId", error);
+            return {status:error.status, message: error.message, data: null};
+        }
+    }
 }
 
 export const entryService = new EntryService();
