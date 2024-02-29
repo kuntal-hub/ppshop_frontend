@@ -79,6 +79,23 @@ export class EntryService {
             return {status:error.status, message: error.message, data: null};
         }
     }
+
+    async getAllEntriesByAccountName({accountName,page=1,limit=24,fromDate, toDate}) {
+        try {
+            if (!accountName) {
+                throw new Error("Please provide account name");
+            }
+            if (!fromDate || !toDate) {
+                throw new Error("Please provide fromDate and toDate");
+            }
+            const response = await axios.get(
+                `/api/v1/entry/account/${accountName}?page=${page}&limit=${limit}&fromDate=${fromDate}&toDate=${toDate}`);
+            return response.data;
+        } catch (error) {
+            console.log("Error in entryService.getAllEntriesByAccountName", error);
+            return {status:error.status, message: error.message, data: null};
+        }
+    }
 }
 
 export const entryService = new EntryService();

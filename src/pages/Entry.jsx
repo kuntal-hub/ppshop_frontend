@@ -75,7 +75,7 @@ export default function Entry() {
             setAadhar("");
             setPhone("");
             setAddress("");
-            setAccountId("cash");
+            // setAccountId("cash");
             setAmount(0);
             setIsDisabled(false);
         }else {
@@ -113,7 +113,7 @@ export default function Entry() {
                     >
                         Customer Id :
                     </label>
-                    <input
+                    <input tabIndex={1}
                         id="customerId"
                         type="text"
                         placeholder='Enter customer id'
@@ -134,7 +134,7 @@ export default function Entry() {
                     <label htmlFor="customerName" className='text-black font-semibold block mb-1' >
                         Customer Name :
                     </label>
-                    <input
+                    <input tabIndex={3}
                         type="text"
                         id="customerName"
                         className={className}
@@ -148,7 +148,7 @@ export default function Entry() {
                     <label htmlFor="aadhar" className='text-black font-semibold block mb-1'>
                         Aadhar :
                     </label>
-                    <input
+                    <input tabIndex={4}
                         type="text"
                         id="aadhar"
                         className={className}
@@ -162,7 +162,7 @@ export default function Entry() {
                     <label htmlFor="phone" className='text-black font-semibold block mb-1'>
                         Phone :
                     </label>
-                    <input
+                    <input tabIndex={5}
                         type="text"
                         id="phone"
                         className={className}
@@ -176,7 +176,7 @@ export default function Entry() {
                     <label htmlFor="address" className='text-black font-semibold block mb-1'>
                         Address :
                     </label>
-                    <input
+                    <input tabIndex={6}
                         type="text"
                         id="address"
                         className={className}
@@ -189,7 +189,7 @@ export default function Entry() {
                     <label htmlFor="amount" className='text-black font-semibold block mb-1'>
                         Amount :
                     </label>
-                    <input
+                    <input tabIndex={2}
                         type="number"
                         id="amount"
                         className={className}
@@ -202,7 +202,7 @@ export default function Entry() {
                         <label htmlFor="payFrom"
                         className='text-black font-bold block mb-1 mt-2 w-1/3 text-center '
                         > Pay From :</label>
-                        <select name="payFrom" id="payFrom"
+                        <select name="payFrom" id="payFrom" tabIndex={7}
                         value={accountId}
                         onChange={(e)=>setAccountId(e.target.value)}
                         className='bg-gray-100 text-black w-full py-2 px-4 font-semibold rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out ml-[1px]'
@@ -222,14 +222,14 @@ export default function Entry() {
                         <label htmlFor="remarks"
                         className='text-black font-bold block mb-1 mt-2 w-1/3 text-center '
                         > Remarks :</label>
-                        <input name="remarks" id="remarks"
+                        <input name="remarks" id="remarks" tabIndex={8}
                         value={remarks}
                         onChange={(e)=>setRemarks(e.target.value)}
                         className='bg-gray-100 text-black w-full py-2 px-4 font-semibold rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out ml-[1px]'
                         />
                     </div>
 
-                    <button onClick={createEntry} disabled={isDisabled}
+                    <button onClick={createEntry} disabled={isDisabled} tabIndex={9}
                     className='text-white hover:bg-green-500 bg-green-600 py-3 px-6 rounded-lg font-semibold mt-2'>
                         Create Entry
                     </button>

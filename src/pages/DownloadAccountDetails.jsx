@@ -5,21 +5,24 @@ import MainContainer from '../components/MainContainer';
 import { entryService } from '../apiServices/entryService';
 import { useDispatch } from 'react-redux';
 import { setNotification } from '../store/notificaionSlice';
+import { useParams,useNavigate } from 'react-router-dom';
 
-export default function DownloadByDate() {
+export default function DownloadByAccountName() {
     const eleRef = useRef(null)
-    const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+    const [fromDate, setFrommtDate] = useState(new Date().toISOString().split('T')[0]);
+    const [toDate, setToDate] = useState(new Date().toISOString().split('T')[0]);
     const [reports, setReports] = useState([]);
-    const [summary, setSummary] = useState([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {accountName} = useParams();
 
     const downloadImg = () => {
         htmlToImage.toPng(eleRef.current, { quality: 1.0, width: 1440, height: 900 })
             .then(function (dataUrl) {
                 var link = document.createElement('a');
-                link.download = `report_${date}.png`;
+                link.download = `report_${accountName}.png`;
                 link.href = dataUrl;
                 document.body.appendChild(link);
                 link.click();
@@ -43,16 +46,15 @@ export default function DownloadByDate() {
             .then(function (dataUrl) {
                 var pdf = new jsPDF('l', 'mm', 'a4');
                 pdf.addImage(dataUrl, 'PNG', 0, 0, 290, 210);
-                pdf.save(`report_${date}.pdf`);
+                pdf.save(`report_${accountName}.pdf`);
             });
     }
 
     const getReports = async (page) => {
         setLoading(true);
-        const response = await entryService.getEntriesByDate({ date, page, limit: 22 });
+        const response = await entryService.getAllEntriesByAccountName({ accountName, page, limit: 24, fromDate,toDate });
         if (response.status < 400 && response.data) {
-            setReports(response.data.entries);
-            setSummary(response.data.summary);
+            setReports(response.data);
             setPage(page);
             setLoading(false);
         } else {
@@ -61,13 +63,10 @@ export default function DownloadByDate() {
         }
     }
 
-    const chengeDate = (e) => {
-        setDate(e.target.value);
-    }
 
     useEffect(() => {
         getReports(1);
-    }, [])
+    }, [accountName])
 
     return (
         <MainContainer>
@@ -75,10 +74,18 @@ export default function DownloadByDate() {
                 <div>
                     <label className='text-black bg-white py-[10px] mr-[1px] rounded-l-lg px-4 font-semibold'
                         htmlFor="Date">
-                        Date :
+                        From Date :
                     </label>
                     <input className='bg-white text-black py-2 px-4 font-semibold rounded-r-lg border-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out'
-                        type="date" id='Date' value={date} onChange={chengeDate} />
+                        type="date" id='Date' value={fromDate} onChange={(e)=>setFrommtDate(e.target.value)} />
+
+                    <label className='text-black ml-2 bg-white py-[10px] mr-[1px] rounded-l-lg px-4 font-semibold'
+                        htmlFor="Date">
+                        To Date :
+                    </label>
+                    <input className='bg-white text-black py-2 px-4 font-semibold rounded-r-lg border-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out'
+                        type="date" id='Date' value={toDate} onChange={(e)=>setToDate(e.target.value)} />
+
                     <button onClick={() => getReports(1)}
                         className='bg-green-600 hover:bg-green-500 text-white font-semibold py-2 px-4 rounded-lg ml-2'
                     >
@@ -166,29 +173,6 @@ export default function DownloadByDate() {
                                     </tr>
                                 ))}
                             </tbody>
-                        </table><br />
-                        <table>
-                            <thead>
-                                <tr>
-                                    {summary.map((s, index) => (
-                                        <th key={index}>{s._id.type}</th>
-                                    
-                                    ))}
-                                    <th>
-                                        Total Turnover
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    {summary.map((s, index) => (
-                                        <td key={index}>{s.total}</td>
-                                    ))}
-                                    <td>
-                                        {summary.reduce((acc, s) => acc + s.total, 0)}
-                                    </td>
-                                </tr>
-                            </tbody>
                         </table>
                     </div>
                     <div className='w-full flex flex-nowrap justify-between px-8 pb-12'>
@@ -197,8 +181,8 @@ export default function DownloadByDate() {
                     >
                         Previous
                     </button>
-                    <button onClick={() => getReports(page + 1)} disabled={reports.length < 22}
-                    className={`${reports.length < 22 ? 'opacity-0' : 'opacity-100'} text-center font-semibold bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg`}
+                    <button onClick={() => getReports(page + 1)} disabled={reports.length < 24}
+                    className={`${reports.length < 24 ? 'opacity-0' : 'opacity-100'} text-center font-semibold bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg`}
                     >
                         Next
                     </button>
@@ -207,3 +191,4 @@ export default function DownloadByDate() {
         </MainContainer>
     )
 }
+

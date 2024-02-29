@@ -117,6 +117,7 @@ export default function ViewCustomer() {
           <InfiniteScroll
             dataLength={entries.length}
             next={() => setPage(page + 1)}
+            height={window.innerHeight - 110}
             hasMore={resData.hasNextPage}
             loader={<h4 className='w-full text-center'>Loading...</h4>}
             endMessage={

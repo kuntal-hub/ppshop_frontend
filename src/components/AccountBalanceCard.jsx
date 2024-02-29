@@ -5,11 +5,13 @@ import { useDispatch } from 'react-redux';
 import { setNotification } from '../store/notificaionSlice';
 import { updateAccounts } from '../store/accountSlice';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export default function AccountBalanceCard({account, setAccounts}) {
     const [showCreateAccount, setShowCreateAccount] = useState(false);
     const accounts = useSelector(state=>state.accounts.accounts);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const deleteAccount = async ()=>{
         const confirm = window.confirm("Are you sure you want to delete this account?");
@@ -34,6 +36,11 @@ export default function AccountBalanceCard({account, setAccounts}) {
             <button onClick={deleteAccount}
             className='py-2 font-semibold px-3 rounded-xl text-white bg-red-600 hover:bg-red-500'>
                 Delete
+            </button>
+
+            <button onClick={()=>navigate(`/account/download/${account.name}`)}
+            className='py-2 font-semibold px-3 rounded-xl text-white bg-blue-600 hover:bg-blue-500'>
+                View
             </button>
 
             <button onClick={()=>setShowCreateAccount(true)}

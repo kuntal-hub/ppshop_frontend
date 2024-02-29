@@ -7,6 +7,7 @@ import ViewCustomer from "./pages/ViewCustomer.jsx";
 import Account from "./pages/Account.jsx";
 import DownloadByDate from "./pages/DownloadByDate.jsx";
 import DownloadByCId from "./pages/DownloadByCId.jsx";
+import DownloadByAccountName from "./pages/DownloadAccountDetails.jsx";
 
 export {
     ErrorPage,
@@ -18,4 +19,5 @@ export {
     Account,
     DownloadByDate,
     DownloadByCId,
+    DownloadByAccountName,
 }

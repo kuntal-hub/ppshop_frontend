@@ -5,7 +5,7 @@ import CreateAndEditAccount from '../components/CreateAndEditAccount';
 import AccountBalanceCard from '../components/AccountBalanceCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateAccounts } from '../store/accountSlice';
-
+import { useNavigate } from 'react-router-dom';
 
 export default function Account() {
   const [accounts, setAccounts] = useState([]);
@@ -13,6 +13,7 @@ export default function Account() {
   const balance = useSelector(state => state.balance.balance);
   const dispatch = useDispatch();
   const [showCreateAccount, setShowCreateAccount] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     accountService.getAccounts()
@@ -53,6 +54,11 @@ export default function Account() {
                     <button disabled={true}
                       className='py-2 font-semibold px-3 rounded-xl text-white bg-red-400 '>
                       Delete
+                    </button>
+
+                    <button onClick={() => navigate(`/account/download/cash`)}
+                      className='py-2 font-semibold px-3 rounded-xl text-white bg-blue-600 hover:bg-blue-500'>
+                      View
                     </button>
 
                     <button disabled={true}
