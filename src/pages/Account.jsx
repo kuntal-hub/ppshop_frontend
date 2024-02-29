@@ -52,7 +52,7 @@ export default function Account() {
                   <br />
                   <div className='flex flex-nowrap justify-between'>
                     <button disabled={true}
-                      className='py-2 font-semibold px-3 rounded-xl text-white bg-red-400 '>
+                      className='py-2 font-semibold px-3 cursor-not-allowed rounded-xl text-white bg-red-400 '>
                       Delete
                     </button>
 
@@ -62,7 +62,7 @@ export default function Account() {
                     </button>
 
                     <button disabled={true}
-                      className='py-2 font-semibold px-3 rounded-xl text-white bg-green-400'>
+                      className='py-2 font-semibold px-3 cursor-not-allowed rounded-xl text-white bg-green-400'>
                       Edit
                     </button>
 
