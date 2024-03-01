@@ -4,6 +4,7 @@ import {balanceService} from "../apiServices/balanceService.js";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateBalance } from '../store/balanceSlice';
 import { setNotification } from '../store/notificaionSlice';
+import { useNavigate } from 'react-router-dom';
 
 export default function Balance() {
     const [fiveh, setFiveh] = useState(0);
@@ -14,8 +15,10 @@ export default function Balance() {
     const [ten, setTen] = useState(0);
     const [others, setOthers] = useState(0);
     const balance = useSelector(state=>state.balance.balance);
+    const user = useSelector(state => state.auth.user);
     const [isDisabled, setIsDisabled] = useState(false);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const saveChanges = async ()=>{
         if (
@@ -52,10 +55,14 @@ export default function Balance() {
     }
 
     useEffect(()=>{
+        if (!user || user.role !== "admin") {
+            return navigate("/");
+        }
         if (!balance) {
             balanceService.getBalance()
             .then(response=>{
                 if (response.status < 400 && response.data) {
+                    dispatch(updateBalance(response.data));
                     setFiveh(response.data.fiveh);
                     setTwoh(response.data.twoh);
                     setOneh(response.data.oneh);

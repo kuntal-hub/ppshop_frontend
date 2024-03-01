@@ -8,6 +8,8 @@ import { balanceService } from './apiServices/balanceService';
 import { accountService } from './apiServices/accountService';
 import Notification from './components/Notification';
 import { Outlet } from 'react-router-dom';
+import { authService } from './apiServices/authService';
+import { login } from './store/authSlice';
 
 function App() {
 
@@ -15,19 +17,25 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(()=>{
-    balanceService.getBalance()
+    authService.getCurrentUser()
     .then(response=>{
-      if (response.status < 400 && response.data) {
-        dispatch(updateBalance(response.data));
+      if(response.status < 400 && response.data){
+        dispatch(login(response.data))
+        balanceService.getBalance()
+        .then(response=>{
+          if (response.status < 400 && response.data) {
+            dispatch(updateBalance(response.data));
+          }
+        })
+        .then(()=>{
+          accountService.getAccounts()
+          .then(response=>{
+            if(response.status < 400 && response.data){
+              dispatch(updateAccounts(response.data))
+            }
+          })
+        })
       }
-    })
-    .then(()=>{
-      accountService.getAccounts()
-      .then(response=>{
-        if(response.status < 400 && response.data){
-          dispatch(updateAccounts(response.data))
-        }
-      })
     })
     .finally(()=>setLoading(false))
   },[])

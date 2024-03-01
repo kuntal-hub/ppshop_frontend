@@ -8,6 +8,9 @@ import Account from "./pages/Account.jsx";
 import DownloadByDate from "./pages/DownloadByDate.jsx";
 import DownloadByCId from "./pages/DownloadByCId.jsx";
 import DownloadByAccountName from "./pages/DownloadAccountDetails.jsx";
+import Login from "./pages/Login.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx";
+import AdminPanel from "./pages/AdminPanel.jsx";
 
 export {
     ErrorPage,
@@ -20,4 +23,7 @@ export {
     DownloadByDate,
     DownloadByCId,
     DownloadByAccountName,
+    Login,
+    ForgotPassword,
+    AdminPanel,
 }

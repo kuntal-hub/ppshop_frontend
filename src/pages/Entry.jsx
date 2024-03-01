@@ -5,6 +5,9 @@ import { customerService } from "../apiServices/customerService.js";
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from '../store/notificaionSlice'
 import { updateAccounts } from '../store/accountSlice.js';
+import { updateBalance } from '../store/balanceSlice.js';
+import { accountService } from '../apiServices/accountService.js';
+import { balanceService } from '../apiServices/balanceService.js';
 
 export default function Entry() {
     const accounts = useSelector(state => state.accounts.accounts);
@@ -83,6 +86,27 @@ export default function Entry() {
             setIsDisabled(false);
         }
     }
+
+    useEffect(() => {
+        if (!accounts) {
+            accountService.getAccounts()
+            .then(response => {
+                if (response.status < 400 && response.data) {
+                    dispatch(updateAccounts(response.data))
+                }
+            })
+            .then(()=>{
+                if (!balance) {
+                    balanceService.getBalance()
+                    .then(response=>{
+                        if (response.status < 400 && response.data) {
+                            dispatch(updateBalance(response.data));
+                        }
+                    })
+                }
+            })
+        }
+    },[])
 
     useEffect(() => {
         if (customerId.trim().length >= 4) {

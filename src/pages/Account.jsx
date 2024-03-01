@@ -6,24 +6,47 @@ import AccountBalanceCard from '../components/AccountBalanceCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateAccounts } from '../store/accountSlice';
 import { useNavigate } from 'react-router-dom';
+import {balanceService} from "../apiServices/balanceService.js";
+import { updateBalance } from '../store/balanceSlice';
+import { setNotification } from '../store/notificaionSlice.js';
 
 export default function Account() {
-  const [accounts, setAccounts] = useState([]);
+  const allAccounts = useSelector(state=>state.accounts.accounts);
   const [loading, setLoading] = useState(true);
   const balance = useSelector(state => state.balance.balance);
+  const user = useSelector(state => state.auth.user);
   const dispatch = useDispatch();
   const [showCreateAccount, setShowCreateAccount] = useState(false);
   const navigate = useNavigate();
+  const [accounts, setAccounts] = useState(allAccounts?allAccounts:[]);
 
   useEffect(() => {
-    accountService.getAccounts()
-      .then(res => {
-        if (res.status < 400 && res.data) {
-          setAccounts(res.data);
-          dispatch(updateAccounts(res.data));
-          setLoading(false);
+    async function fetchData() {
+      if (!allAccounts) {
+        const response = await accountService.getAccounts();
+        if (response.status < 400 && response.data) {
+          setAccounts(response.data);
+          dispatch(updateAccounts(response.data));
+        } else {
+          dispatch(setNotification({ text: response.message, type: "error" }))
         }
-      })
+      }
+      if (!balance) {
+        const response = await balanceService.getBalance();
+        if (response.status < 400 && response.data) {
+          dispatch(updateBalance(response.data));
+        } else {
+          dispatch(setNotification({ text: response.message, type: "error" }))
+        }
+      }
+      setLoading(false);
+    }
+
+    if (user && user.role === "admin") {
+      fetchData();
+    } else {
+      navigate("/");
+    }
   }, [])
 
   return (
