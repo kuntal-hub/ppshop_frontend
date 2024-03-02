@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import { customerService } from '../apiServices/customerService';
 import { setNotification } from '../store/notificaionSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import EditCustomer from "./EditCustomer.jsx";
 
@@ -10,6 +10,7 @@ export default function CustomerCard({customer,index,setCustomers}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [showForm, setShowForm] = useState(false);
+    const user = useSelector(state => state.auth.user);
 
     const deleteCustomer = async ()=>{
         const confirm = window.confirm("Are you sure you want to delete this customer?");
@@ -43,10 +44,11 @@ return (
                 Edit
             </button>
 
+            {user && user.role === "admin" &&
             <button onClick={deleteCustomer}
             className='py-2 font-semibold px-3 rounded-xl text-white bg-red-600 hover:bg-red-500'>
                 Delete
-            </button>
+            </button>}
         </div>
         {showForm && <EditCustomer customer={customer} index={index} setCustomers={setCustomers} setShowForm={setShowForm}/>}
     </div>

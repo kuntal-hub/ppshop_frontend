@@ -119,9 +119,10 @@ export default function DownloadByAccountName() {
                                     <th>ID</th>
                                     <th>Aadhar</th>
                                     <th>Phone</th>
-                                    <th>Address</th>
                                     <th>Amount</th>
                                     <th>Pay From</th>
+                                    <th>OB</th>
+                                    <th>CB</th>
                                     <th>Remarks</th>
                                     <th>Date</th>
                                     <th> </th>
@@ -139,11 +140,13 @@ export default function DownloadByAccountName() {
                                     <tr key={index}>
                                         <td>{report.owner.name}</td>
                                         <td>{report.owner.cId}</td>
-                                        <td>{report.owner.aadhar}</td>
+                                        <td>{`XXXX XXXX ${report.owner.aadhar.slice(-4)}`}</td>
                                         <td>{report.owner.phone}</td>
-                                        <td>{report.owner.address.slice(0,15)}</td>
                                         <td>{report.amount}</td>
                                         <td>{report.from}</td>
+                                        <td>{report.ob? report.ob : "null"}</td>
+                                        <td>{report.from !== "cash" ? (report.ob ? report.ob + report.amount : "null")
+                                        :report.report.length > 0 ? (report.ob ? report.ob + report.amount : "null") : "null"}</td>
                                         <td>{report.remarks.slice(0,16)}</td>
                                         <td>{new Date(report.createdAt).toLocaleString()}</td>
                                         <td>

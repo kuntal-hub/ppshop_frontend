@@ -11,18 +11,18 @@ import { updateBalance } from '../store/balanceSlice';
 import { setNotification } from '../store/notificaionSlice.js';
 
 export default function Account() {
-  const allAccounts = useSelector(state=>state.accounts.accounts);
+  // const allAccounts = useSelector(state=>state.accounts.accounts);
   const [loading, setLoading] = useState(true);
   const balance = useSelector(state => state.balance.balance);
   const user = useSelector(state => state.auth.user);
   const dispatch = useDispatch();
   const [showCreateAccount, setShowCreateAccount] = useState(false);
   const navigate = useNavigate();
-  const [accounts, setAccounts] = useState(allAccounts?allAccounts:[]);
+  const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      if (!allAccounts) {
+      
         const response = await accountService.getAccounts();
         if (response.status < 400 && response.data) {
           setAccounts(response.data);
@@ -30,7 +30,7 @@ export default function Account() {
         } else {
           dispatch(setNotification({ text: response.message, type: "error" }))
         }
-      }
+      
       if (!balance) {
         const response = await balanceService.getBalance();
         if (response.status < 400 && response.data) {

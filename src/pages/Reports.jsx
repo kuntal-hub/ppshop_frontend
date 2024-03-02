@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {useDispatch} from 'react-redux'
+import {useDispatch,useSelector} from 'react-redux'
 import {reportService} from "../apiServices/reportService.js"
 import MainContainer from "../components/MainContainer.jsx"
 import { setNotification } from '../store/notificaionSlice.js'
@@ -15,6 +15,7 @@ export default function Reports() {
   const [reports, setReports] = useState([]);
   const [showDeleteAllComponent, setShowDeleteAllComponent] = useState(false);
   const navigate = useNavigate();
+  const user = useSelector(state => state.auth.user);
 
   const refreshPage = async ()=>{
     reportService.getAllReports({page:1, limit:20})
@@ -50,11 +51,14 @@ export default function Reports() {
       <div className='w-full h-full'>
       { resData && <div className='w-full h-full'>
         <div className='flex flex-nowrap justify-between w-full'>
+
+          {user && user.role === "admin" &&
             <button onClick={()=>setShowDeleteAllComponent(!showDeleteAllComponent)}
             className='bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg mt-2 ml-3'>
               Delete All
-            </button>
-            <h1 className=' text-2xl font-bold mt-2'>
+            </button>}
+
+            <h1 className='ml-4 text-2xl font-bold mt-2'>
               All Reports 
             </h1>
             <button onClick={()=>navigate('/download')}

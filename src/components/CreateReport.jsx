@@ -19,6 +19,7 @@ export default function CreateReport({ setShowCreateReport,report, amount, eId, 
     const [others, setOthers] = useState(0);
     const [showGenarateSlip,setShowGenarateSlip] = useState(false);
     const balance = useSelector(state => state.balance.balance);
+    const user = useSelector(state => state.auth.user);
     const [isDisabled, setIsDisabled] = useState(false);
     const payableAmount = amount<0 ? Number.parseInt(String(amount).replace("-","")) : Number.parseInt("-"+amount)
     
@@ -281,7 +282,8 @@ export default function CreateReport({ setShowCreateReport,report, amount, eId, 
                         Create Report
                     </button>
                 </div>
-                <div className='w-[50%] pt-3'>
+                <div className={`w-[50%] pt-3`}>
+                    {user && user.role === "admin" && <>
                     <p className='w-full text-center text-lg mb-2'>
                         <strong>Available Cash Balance</strong>
                     </p>
@@ -359,6 +361,7 @@ export default function CreateReport({ setShowCreateReport,report, amount, eId, 
                             />
                         </div>
                     </div>
+                    </>}
                 </div>
             </div>
             {showGenarateSlip && 

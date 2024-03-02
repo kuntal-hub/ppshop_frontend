@@ -1,17 +1,18 @@
 import React,{useState} from 'react'
 import { entryService } from '../apiServices/entryService';
 import { setNotification } from '../store/notificaionSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CreateReport from './CreateReport';
 import EditReport from './EditReport';
-import ViewReport from './ViewReport';
+import Slip from './Slip';
 
 export default function ReportCard({report,index,setReports,refreshPage}) {
     const date = new Date(report.createdAt);
     const dispatch = useDispatch();
     const [showCreateReport, setShowCreateReport] = useState(false);
     const [showEitReport, setShowEditReport] = useState(false);
-    const [showViewReport, setShowViewReport] = useState(false);
+    const [showGenarateSlip,setShowGenarateSlip] = useState(false);
+    const user = useSelector(state => state.auth.user);
 
     const ShowEditOrCreateForm = ()=>{
         if (report.report.length === 0) {
@@ -47,7 +48,7 @@ return (
         <div className='flex flex-nowrap justify-between mt-3'>
 
             {report.report.length !== 0 && 
-            <button onClick={()=>setShowViewReport(true)}
+            <button onClick={()=>setShowGenarateSlip(true)}
             className='py-2 font-semibold px-3 rounded-xl text-white bg-blue-600 hover:bg-blue-500'>
                 View
             </button>}
@@ -57,17 +58,19 @@ return (
                 {report.report.length === 0? "Create Report" : "Edit"}
             </button>
             
+            {user && user.role === "admin" &&
             <button onClick={deleteEntry}
             className='py-2 font-semibold px-3 rounded-xl text-white bg-red-600 hover:bg-red-500'>
                 Delete
-            </button>
+            </button>}
         </div>
         {showCreateReport && report.report.length ===0 &&
         <CreateReport setShowCreateReport={setShowCreateReport} report={report} amount={report.amount} eId={report._id} refreshPage={refreshPage} />}
         {showEitReport && report.report.length !==0 &&
         <EditReport setShowEditReport={setShowEditReport} report={report.report[0]} entry={report} amount={report.amount} refreshPage={refreshPage} />}
-        {showViewReport && report.report.length !==0 &&
-        <ViewReport setShowViewReport={setShowViewReport} report={report} refreshPage={refreshPage} />}
+
+        {showGenarateSlip && report.report.length !==0 &&
+        <Slip setShowGenarateSlip={setShowGenarateSlip} report={report} notes={report.report[0]} />}
     </div>
   )
 }
