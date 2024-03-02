@@ -41,18 +41,15 @@ export default function Entry() {
             setIsDisabled(true);
             response = await entryService.createEntry({ customer_id: customer._id, amount: Number.parseInt(amount), accountId, remarks })
         } else if (!customer) {
+            if (!customerId || !name) {
+                return dispatch(setNotification({ text: "Customer Id and name is required!", type: "error" }))
+            }
+            
             if (customerIdError !== "Customer not found!") {
                 dispatch(setNotification({ text: "Invalid Customer Id!", type: "error" }))
                 return;
             }
-            if (aadhar.length < 12 || isNaN(aadhar)) {
-                dispatch(setNotification({ text: "Invalid Aadhar Number!", type: "error" }))
-                return;
-            }
-            if (phone.length < 10) {
-                dispatch(setNotification({ text: "Invalid Phone number!", type: "error" }))
-                return;
-            }
+           
             setIsDisabled(true);
             response = await entryService.createEntry({
                 amount: Number.parseInt(amount),
@@ -130,7 +127,7 @@ export default function Entry() {
     }, [search, searchBy])
 
     useEffect(() => {
-        if (customerId.trim().length >= 4) {
+        if (customerId.trim().length > 0) {
             const timeout = setTimeout(async () => {
                 customerService.findCustomer({ cId: customerId })
                     .then(response => {

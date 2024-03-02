@@ -8,33 +8,27 @@ import { customerService } from "../apiServices/customerService.js";
 export default function CustomerForm({ setShowForm, setCustomers }) {
   const [cId, setCId] = useState('');
   const [disable, setDisable] = useState(false);
-  const [aadharError, setAadharError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
   const [cIdError, setCIdError] = useState("");
   const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
 
   const submit = async (data) => {
-    setAadharError("");
-    setPhoneError("");
-    setDisable(true);
+    
+    if (!cId || cId.trim() === "") {
+      setCIdError("Customer Id is required!")
+      return;
+    }
 
-    if (data.aadhar.length < 12 || isNaN(data.aadhar)) {
-      setAadharError("Invalid aadhar number");
+    if (!data.name.trim()) {
+      dispatch(setNotification({type:"error",text:"name is required!"}))
       return;
     }
-    if (data.phone.length < 10) {
-      setPhoneError("Invalid phone number");
-      return;
-    }
-    if (cId.length < 4) {
-      setCIdError("Customer Id must be at least 4 characters long!")
-      return;
-    }
+    
     if (cIdError !== "Id Available!") {
       return;
     }
-
+    
+    setDisable(true);
     const response = await customerService.createCustomer({
       name: data.name.trim(),
       cId: cId,
@@ -50,6 +44,7 @@ export default function CustomerForm({ setShowForm, setCustomers }) {
       setShowForm(false);
     } else {
       dispatch(setNotification({ text: response.message, type: "error" }))
+      setDisable(false);
     }
   }
 
@@ -59,7 +54,7 @@ export default function CustomerForm({ setShowForm, setCustomers }) {
   }
 
   useEffect(() => {
-    if (cId.trim().length >= 4) {
+    if (cId.trim().length > 0) {
       const timeout = setTimeout(async () => {
         const response = await customerService.findCustomer({ cId });
         if (response.status < 400 && response.data) {
@@ -107,7 +102,6 @@ export default function CustomerForm({ setShowForm, setCustomers }) {
             required={true}
             placeholder='Enter Aadhar Number...'
           /> <br />
-          <p className='text-red-500 font-semibold text-sm'>{aadharError}</p>
           <br />
 
 
@@ -118,7 +112,6 @@ export default function CustomerForm({ setShowForm, setCustomers }) {
             required={true}
             placeholder='Enter Phone Number...'
           /> <br />
-          <p className='text-red-500 font-semibold text-sm'>{phoneError}</p>
           <br />
 
 

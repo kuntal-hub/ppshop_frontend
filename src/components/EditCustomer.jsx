@@ -8,8 +8,6 @@ import { customerService } from "../apiServices/customerService.js";
 export default function CustomerForm({ setShowForm, setCustomers, customer, index }) {
     const [cId, setCId] = useState(customer.cId);
     const [disable, setDisable] = useState(false);
-    const [aadharError, setAadharError] = useState("");
-    const [phoneError, setPhoneError] = useState("");
     const [cIdError, setCIdError] = useState("");
     const { register, handleSubmit } = useForm();
     const dispatch = useDispatch();
@@ -24,26 +22,20 @@ export default function CustomerForm({ setShowForm, setCustomers, customer, inde
             setShowForm(false);
             return;
         }
-        setAadharError("");
-        setPhoneError("");
-        setDisable(true);
 
-        if (data.aadhar.length < 12 || isNaN(data.aadhar)) {
-            setAadharError("Invalid aadhar number");
-            return;
+        if (!cId) {
+            return setCIdError("customer Id is required")
         }
-        if (data.phone.length < 10) {
-            setPhoneError("Invalid phone number");
-            return;
+
+        if (!data.name.trim()) {
+            return dispatch(setNotification({ text: "name is required", type: "error" }))
         }
-        if (cId.length < 4) {
-            setCIdError("Customer Id must be at least 4 characters long!")
-            return;
-        }
+
         if (cIdError !== "Id Available!" && cId !== customer.cId) {
             return;
         }
         
+        setDisable(true);
         const response = await customerService.updateCustomer({
             cId: customer.cId,
             name: data.name.trim(),
@@ -63,6 +55,7 @@ export default function CustomerForm({ setShowForm, setCustomers, customer, inde
             setShowForm(false);
         } else {
             dispatch(setNotification({ text: response.message, type: "error" }))
+            setDisable(false);
         }
     }
 
@@ -72,7 +65,7 @@ export default function CustomerForm({ setShowForm, setCustomers, customer, inde
     }
 
     useEffect(() => {
-        if (cId.trim().length >= 4 && cId !== customer.cId) {
+        if (cId.trim().length >0 && cId !== customer.cId) {
             const timeout = setTimeout(async () => {
                 const response = await customerService.findCustomer({ cId });
                 if (response.status < 400 && response.data) {
@@ -122,7 +115,6 @@ export default function CustomerForm({ setShowForm, setCustomers, customer, inde
                         required={true}
                         placeholder='Enter Aadhar Number...'
                     /> <br />
-                    <p className='text-red-500 font-semibold text-sm'>{aadharError}</p>
                     <br />
 
 
@@ -134,7 +126,6 @@ export default function CustomerForm({ setShowForm, setCustomers, customer, inde
                         required={true}
                         placeholder='Enter Phone Number...'
                     /> <br />
-                    <p className='text-red-500 font-semibold text-sm'>{phoneError}</p>
                     <br />
 
 

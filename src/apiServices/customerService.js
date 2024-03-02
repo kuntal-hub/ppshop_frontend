@@ -4,17 +4,8 @@ export class CustomerService {
     
     async createCustomer({name, cId, aadhar, address="", phone}) {
         try {
-            if (!name || !cId || !aadhar || !phone) {
+            if (!name || !cId) {
                 throw new Error("Please provide all the required fields");
-            }
-            if (aadhar.length < 12) {
-                throw new Error("Invalid aadhar number");
-            }
-            if (cId.length < 4) {
-                throw new Error("customer id should be atleast 4 characters long");
-            }
-            if (phone.length < 10) {
-                throw new Error("Invalid phone number");
             }
             const response = await axios.post("/api/v1/customerInfo/create",{name, cId, aadhar, address, phone});
             return response.data;
@@ -28,9 +19,6 @@ export class CustomerService {
         try {
             if (!cId) {
                 throw new Error("Please provide customer id");
-            }
-            if (!name || !aadhar || !phone || !newCId) {
-                throw new Error("Please provide all the required fields")
             }
             const response = await axios.patch(`/api/v1/customerInfo/update/${cId}`,{name, newCId, aadhar, address, phone});
             return response.data;
