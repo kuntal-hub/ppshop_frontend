@@ -31,6 +31,9 @@ export default function AccountBalanceCard({account, setAccounts}) {
         <p className='text-center font-bold text-xl'>{account.name}</p>
         <br />
         <p><strong>Balance : </strong> {account.balance}</p>
+        <p><strong>Turnover(Today) : </strong> {account.totalTurnover}</p>
+        <p><strong>OB(Today) : </strong> {account.firstEntry? account.firstEntry.ob : account.balance}</p>
+        <p><strong>CB(Today) : </strong> {account.balance}</p>
         <br />
         <div className='flex flex-nowrap justify-between'>
             <button onClick={deleteAccount}
