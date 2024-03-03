@@ -55,7 +55,7 @@ export default function Account() {
         <div className='w-full h-full grid place-content-center text-3xl font-bold text-black'>
           Loading...
         </div> :
-        <div className='w-full h-full'>
+        <div className='w-full h-auto overflow-auto mb-5'>
           <h1 className='text-center text-2xl font-bold mt-2'>
             Accounts
           </h1>
@@ -106,6 +106,53 @@ export default function Account() {
           }
           {showCreateAccount && <CreateAndEditAccount setShowCreateAccount={setShowCreateAccount} setAccounts={setAccounts} />}
         </div>}
+        {
+          !loading && <div className='w-[1440px] h-[165px] mx-auto px-5 pb-10'>
+                <table className=' max-w-[1400px]'>
+                    <thead>
+                      <tr>
+                        <th></th>
+                        {accounts.map((account, i) => {
+                          return (
+                            <th key={i} className='text-center'>{account.name}</th>
+                          )
+                        })}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className='text-center'>Opening Balance</td>
+                        {accounts.map((account, i) => {
+                          return (
+                            <td key={i} className='text-center'>{account.firstEntry? account.firstEntry.ob : account.balance}</td>
+                          )
+                        })}
+                      </tr>
+                      <tr>
+                        <td>
+                          Closing Balance
+                        </td>
+                        {accounts.map((account, i) => {
+                          return (
+                            <td key={i} className='text-center'>{account.balance}</td>
+                          )
+                        })}
+                      </tr>
+                      <tr>
+                        <td>
+                          Turnover
+                        </td>
+                        {accounts.map((account, i) => {
+                          return (
+                            <td key={i} className='text-center'>{account.totalTurnover}</td>
+                          )
+                        })}
+                      </tr>
+
+                    </tbody>
+                </table>
+          </div>
+        }
     </MainContainer>
   )
 }

@@ -164,11 +164,6 @@ export default function Entry() {
                         onChange={(e) => {
                             const value = e.target.value.trim();
                             setCustomerId(value);
-                            if (value.length >= 4) {
-                                setCustomerIdError("");
-                            } else {
-                                setCustomerIdError("Enter atleast 4 characters");
-                            }
                         }}
                     /> <br />
                     {customerIdError && <p className={`${customerIdError === "Customer Found!" ? "text-green-500" : "text-red-500"} font-semibold text-sm text-start`}>{customerIdError}</p>}

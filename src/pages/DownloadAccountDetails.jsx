@@ -110,11 +110,12 @@ export default function DownloadByAccountName() {
                 Loding......
             </div> :
                 <div>
-                    <div className='w-[1440px] h-[900px] mx-auto p-5' ref={eleRef}>
+                    <div className='w-[1440px] h-[900px] mx-auto py-5 px-2' ref={eleRef}>
 
                         <table className='w-[1400px]'>
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>Name</th>
                                     <th>ID</th>
                                     <th>Aadhar</th>
@@ -138,6 +139,9 @@ export default function DownloadByAccountName() {
                             <tbody>
                                 {reports.map((report, index) => (
                                     <tr key={index}>
+                                        <td>
+                                            <input type="checkbox" name="" id="" />
+                                        </td>
                                         <td>{report.owner.name}</td>
                                         <td>{report.owner.cId}</td>
                                         <td>{`XXXX XXXX ${report.owner.aadhar.slice(-4)}`}</td>
