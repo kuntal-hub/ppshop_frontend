@@ -116,7 +116,7 @@ export default function DownloadByAccountName() {
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>Name</th>
+                                    <th className='w-28 overflow-auto'>Name</th>
                                     <th>ID</th>
                                     <th>Aadhar</th>
                                     <th>Phone</th>
@@ -124,7 +124,7 @@ export default function DownloadByAccountName() {
                                     <th>Pay From</th>
                                     <th>OB</th>
                                     <th>CB</th>
-                                    <th>Remarks</th>
+                                    <th className='w-32 overflow-auto'>Remarks</th>
                                     <th>Date</th>
                                     <th> </th>
                                     <th>500</th>

@@ -111,16 +111,16 @@ export default function DownloadByDate() {
                             <thead>
                                 <tr>
                                     <th> </th>
-                                    <th>Name</th>
+                                    <th className='w-28 overflow-auto'>Name</th>
                                     <th>ID</th>
                                     <th>Aadhar</th>
                                     <th>Phone</th>
-                                    <th>Address</th>
+                                    <th className='w-32 overflow-auto'>Address</th>
                                     <th>Amount</th>
                                     <th>Pay From</th>
                                     <th>OB</th>
                                     <th>CB</th>
-                                    <th>Remarks</th>
+                                    <th className='w-32 overflow-auto'>Remarks</th>
                                     <th>Date</th>
                                     <th> </th>
                                     <th>500</th>
@@ -138,17 +138,17 @@ export default function DownloadByDate() {
                                         <td>
                                             <input type="checkbox" name="" id="" />
                                         </td>
-                                        <td>{report.owner.name}</td>
+                                        <td className=' w-28 overflow-auto'>{report.owner.name}</td>
                                         <td>{report.owner.cId}</td>
                                         <td>{`XXXX XXXX ${report.owner.aadhar.slice(-4)}`}</td>
                                         <td>{report.owner.phone}</td>
-                                        <td>{report.owner.address.slice(0, 15)}</td>
+                                        <td className='w-32 overflow-auto'>{report.owner.address.slice(0, 15)}</td>
                                         <td>{report.amount}</td>
                                         <td>{report.from}</td>
                                         <td>{report.ob ? report.ob : "null"}</td>
                                         <td>{report.from !== "cash" ? (report.ob ? report.ob + report.amount : "null")
                                         :report.report.length > 0 ? (report.ob ? report.ob + report.amount : "null") : "null"}</td>
-                                        <td>{report.remarks.slice(0, 16)}</td>
+                                        <td className='w-32 overflow-auto'>{report.remarks.slice(0, 16)}</td>
                                         <td>{new Date(report.createdAt).toLocaleString()}</td>
                                         <td>
 

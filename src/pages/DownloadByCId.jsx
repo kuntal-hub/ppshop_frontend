@@ -107,16 +107,16 @@ export default function DownloadByCId() {
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>Name</th>
+                                    <th className='w-28 overflow-auto'>Name</th>
                                     <th>ID</th>
                                     <th>Aadhar</th>
                                     <th>Phone</th>
-                                    <th>Address</th>
+                                    <th className='w-32 overflow-auto'>Address</th>
                                     <th>Amount</th>
                                     <th>Pay From</th>
                                     <th>OB</th>
                                     <th>CB</th>
-                                    <th>Remarks :</th>
+                                    <th className='w-32 overflow-auto'>Remarks :</th>
                                     <th>Date</th>
                                     <th> </th>
                                     <th>500</th>
@@ -134,7 +134,7 @@ export default function DownloadByCId() {
                                         <td>
                                             <input type="checkbox" name="" id="" />
                                         </td>
-                                        <td>{report.owner.name}</td>
+                                        <td className=' w-28 overflow-auto'>{report.owner.name}</td>
                                         <td>{report.owner.cId}</td>
                                         <td>{`XXXX XXXX ${report.owner.aadhar.slice(-4)}`}</td>
                                         <td>{report.owner.phone}</td>
