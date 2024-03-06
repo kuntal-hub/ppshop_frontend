@@ -19,6 +19,17 @@ export default function Account() {
   const [showCreateAccount, setShowCreateAccount] = useState(false);
   const navigate = useNavigate();
   const [accounts, setAccounts] = useState([]);
+  let totalOpeningBalance = 0;
+  let totalClosingBalance = 0;
+  let totalTurnover = 0;
+
+  if (accounts && accounts.length > 0) {
+    accounts.forEach(account => {
+      totalOpeningBalance += account.firstEntry ? account.firstEntry.ob : account.balance;
+      totalClosingBalance += account.balance;
+      totalTurnover += account.totalTurnover;
+    });
+  }
 
   useEffect(() => {
     async function fetchData() {
@@ -117,6 +128,9 @@ export default function Account() {
                             <th key={i} className='text-center'>{account.name}</th>
                           )
                         })}
+                        <th>
+                          Total
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -127,6 +141,7 @@ export default function Account() {
                             <td key={i} className='text-center'>{account.firstEntry? account.firstEntry.ob : account.balance}</td>
                           )
                         })}
+                        <td className='text-center'>{totalOpeningBalance}</td>
                       </tr>
                       <tr>
                         <td>
@@ -137,6 +152,7 @@ export default function Account() {
                             <td key={i} className='text-center'>{account.balance}</td>
                           )
                         })}
+                        <td className='text-center'>{totalClosingBalance}</td>
                       </tr>
                       <tr>
                         <td>
@@ -147,6 +163,7 @@ export default function Account() {
                             <td key={i} className='text-center'>{account.totalTurnover}</td>
                           )
                         })}
+                        <td className='text-center'>{totalTurnover}</td>
                       </tr>
 
                     </tbody>
